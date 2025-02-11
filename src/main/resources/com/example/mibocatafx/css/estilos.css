@@ -1,0 +1,19 @@
+/* Estilo global para todos los botones */
+Button {
+    -fx-background-color: #7EFA75;
+    -fx-border-color: #000000;
+    -fx-border-width: 3px;
+    -fx-padding: 5px;
+}
+
+/* Estilo específico para botones con la clase custom-button */
+.custom-button {
+    -fx-background-color: #7EFA75;
+    -fx-border-color: #000000;
+    -fx-border-width: 3px;
+    -fx-padding: 5px;
+}
+Toolbar{
+    -fx-background-color: #7EFA75;
+
+}
