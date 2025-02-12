@@ -1,6 +1,5 @@
 package com.example.mibocatafx.models;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +7,8 @@ import jakarta.persistence.*;
 public class Bocadillo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id", columnDefinition = "INT")
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;
@@ -16,29 +16,38 @@ public class Bocadillo {
     @Column(nullable = false)
     private String ingredientes;
 
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
+    @Column(nullable = false)
+    private String Dia_semana;
 
-    public void setId(Long id) {
-        this.id = id;
+    @Column(nullable = false)
+    private Double Precio;
+
+    @Column(nullable = false)
+    private Integer Tipo;
+
+    // Getters y Setters
+    public Integer getId() {
+        return id;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getingredientes() {
+    public String getIngredientes() { // Cambio de nombre del getter
         return ingredientes;
     }
 
-    public void setingredientes(String apellido1) {
-        this.ingredientes = apellido1;
+    public String getDia_semana() {
+        return Dia_semana;
+    }
+
+    public Double getPrecio() {
+        return Precio;
+    }
+
+    public Integer getTipo() {
+        return Tipo;
     }
 
     @Override
@@ -47,6 +56,9 @@ public class Bocadillo {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", ingredientes='" + ingredientes + '\'' +
+                ", Dia_semana='" + Dia_semana + '\'' +
+                ", Precio=" + Precio +
+                ", Tipo=" + Tipo +
                 '}';
     }
 
@@ -54,10 +66,12 @@ public class Bocadillo {
     public Bocadillo() {
     }
 
-    // Constructor con parámetros
-    public Bocadillo(Long id, String nombre, String apellido1) {
+    public Bocadillo(Integer id, String nombre, String ingredientes, String dia_semana, Double precio, Integer tipo) {
         this.id = id;
         this.nombre = nombre;
-        this.ingredientes = apellido1;
+        this.ingredientes = ingredientes;
+        Dia_semana = dia_semana;
+        Precio = precio;
+        Tipo = tipo;
     }
 }

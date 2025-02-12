@@ -39,4 +39,12 @@ public class BocadilloDao {
                     .list();
         }
     }
+
+    public List<Bocadillo> getByDiaSemana(String diaSemana) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Bocadillo WHERE Dia_semana = :diaSemana", Bocadillo.class)
+                    .setParameter("diaSemana", diaSemana)
+                    .list();
+        }
+    }
 }

@@ -24,4 +24,7 @@ public class BocadilloService {
     public List<Bocadillo> getPaginated() {
         return bocadilloDao.getPaginated();
     }
+    public List<Bocadillo> getByDiaSemana(String diaSemana) {
+        return bocadilloDao.getByDiaSemana(diaSemana);
+    }
 }

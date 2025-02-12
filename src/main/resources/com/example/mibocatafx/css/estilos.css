@@ -1,9 +1,16 @@
 /* Estilo global para todos los botones */
 Button {
-    -fx-background-color: #7EFA75;
+    -fx-background-color: #E3D0A2;
     -fx-border-color: #000000;
-    -fx-border-width: 3px;
-    -fx-padding: 5px;
+    -fx-border-width: 2px;
+    -fx-padding: 10px 30px;
+    -fx-font-weight: bold;
+    -fx-font-size:15px;
+    -fx-cursor: hand;
+}
+
+Label{
+    -fx-font-weight: bold;
 }
 
 /* Estilo específico para botones con la clase custom-button */
