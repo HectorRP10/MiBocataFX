@@ -23,7 +23,7 @@ public class Bocadillo {
     private Double Precio;
 
     @Column(nullable = false)
-    private Integer Tipo;
+    private String Tipo;
 
     // Getters y Setters
     public Integer getId() {
@@ -46,27 +46,17 @@ public class Bocadillo {
         return Precio;
     }
 
-    public Integer getTipo() {
+    public String getTipo() {
         return Tipo;
     }
 
-    @Override
-    public String toString() {
-        return "Bocadillo{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", ingredientes='" + ingredientes + '\'' +
-                ", Dia_semana='" + Dia_semana + '\'' +
-                ", Precio=" + Precio +
-                ", Tipo=" + Tipo +
-                '}';
-    }
+
 
     // Constructor vacío
     public Bocadillo() {
     }
 
-    public Bocadillo(Integer id, String nombre, String ingredientes, String dia_semana, Double precio, Integer tipo) {
+    public Bocadillo(Integer id, String nombre, String ingredientes, String dia_semana, Double precio, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.ingredientes = ingredientes;

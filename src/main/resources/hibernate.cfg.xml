@@ -11,6 +11,7 @@
         <property name="hibernate.show_sql">true</property>
 
         <mapping class="com.example.mibocatafx.models.Bocadillo"/>
+        <mapping class="com.example.mibocatafx.models.Usuario"/>
 
     </session-factory>
 </hibernate-configuration>

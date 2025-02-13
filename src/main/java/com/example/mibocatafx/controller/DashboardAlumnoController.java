@@ -1,6 +1,8 @@
 package com.example.mibocatafx.controller;
 
+import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.models.Bocadillo;
+import com.example.mibocatafx.models.Usuario;
 import com.example.mibocatafx.service.BocadilloService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -26,7 +28,8 @@ public class DashboardAlumnoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cargarBocadillos();  // Cargar los bocadillos al abrir la ventana
+        cargarBocadillos();  // Cargar los bocadillos
+
     }
 
     public void cargarBocadillos() {
@@ -46,9 +49,9 @@ public class DashboardAlumnoController implements Initializable {
             bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #f9f9f9;");
 
             // Asignar color de fondo según el tipo(caliente/frio)
-            if (bocadillo.getTipo() == 1) {
+            if (bocadillo.getTipo().equals("frio")) {
                 bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #89E9A8;");
-            } else if (bocadillo.getTipo() == 2) {
+            } else if (bocadillo.getTipo().equals("caliente")) {
                 bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #F25F5F;");
             }
 

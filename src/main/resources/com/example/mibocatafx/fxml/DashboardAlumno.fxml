@@ -38,6 +38,7 @@
 
             <HBox fx:id="bocadilloContainer" spacing="10.0" BorderPane.alignment="CENTER" alignment="TOP_CENTER"/>
         </VBox>
+
     </center>
 
 </BorderPane>
