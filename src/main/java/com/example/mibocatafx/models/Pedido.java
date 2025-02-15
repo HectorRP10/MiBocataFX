@@ -7,6 +7,7 @@ import java.util.Date;
 @Table(name = "pedidos")
 public class Pedido {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @Column(name = "id_alumno",nullable = false)
@@ -14,7 +15,7 @@ public class Pedido {
     @Column(name = "id_bocadillo",nullable = false)
     private int id_bocadillo;
     @Column(name = "id_descuento",nullable = true)
-    private int id_descuento;
+    private Integer id_descuento;
     @Column(name = "precio", nullable=true)
     private double precio;
     @Column(name = "fecha", nullable = false)
@@ -26,7 +27,7 @@ public class Pedido {
 
     }
 
-    public Pedido(int id, int id_alumno, int id_bocadillo, int id_descuento, double precio, Date fecha, Date retirado) {
+    public Pedido(int id, int id_alumno, int id_bocadillo, Integer id_descuento, double precio, Date fecha, Date retirado) {
         this.id = id;
         this.id_alumno = id_alumno;
         this.id_bocadillo = id_bocadillo;
@@ -64,7 +65,7 @@ public class Pedido {
         return id_descuento;
     }
 
-    public void setId_descuento(int id_descuento) {
+    public void setId_descuento(Integer id_descuento) {
         this.id_descuento = id_descuento;
     }
 

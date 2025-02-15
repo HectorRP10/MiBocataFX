@@ -8,13 +8,12 @@ import java.util.List;
 public class PedidoService {
     private final PedidoDao pedidoDao = new PedidoDao();
 
-    public void save(Pedido pedido) {
-        // Validación antes de guardar
-        if (pedido.getId() == null || pedido.getId() == 0) {
-            throw new IllegalArgumentException("El ID no puede estar vacío.");
+    public void insertarPedido(Pedido pedido) {
+        if (pedido != null) {
+            pedidoDao.save(pedido);
+        } else {
+            throw new IllegalArgumentException("El pedido no puede ser nulo.");
         }
-
-        pedidoDao.save(pedido);
     }
 
     public List<Pedido> getAll() {
@@ -24,5 +23,5 @@ public class PedidoService {
     public List<Pedido> getPaginated() {
         return pedidoDao.getPaginated();
     }
-
 }
+

@@ -4,7 +4,6 @@ import com.example.mibocatafx.models.Pedido;
 import com.example.mibocatafx.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class PedidoDao {
@@ -12,10 +11,11 @@ public class PedidoDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.persist(pedido);
+            session.saveOrUpdate(pedido);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
+                System.out.println("Pedido no es nulo");
                 transaction.rollback();
             }
             e.printStackTrace();
@@ -32,9 +32,9 @@ public class PedidoDao {
         int pageSize = 10;
         int pageNumber = 2;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("select new Pedidos(m.id, m.id_usuario, m.precio) from Pedidos m", Pedido.class)
-                    .setFirstResult((pageNumber - 1) * pageSize) // Salta los primeros 10 registros
-                    .setMaxResults(pageSize) // Devuelve 10 registros
+            return session.createQuery("FROM Pedido", Pedido.class)
+                    .setFirstResult((pageNumber - 1) * pageSize)
+                    .setMaxResults(pageSize)
                     .list();
         }
     }
