@@ -13,11 +13,10 @@
 
     <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" alignment="TOP_CENTER" spacing="20.0" >
         <Region prefHeight="5.0" />
-        <Label text="SELECCIONE BOCADILLO" styleClass="label_dashboard_alumno"/>
+        <Label text="Esto es el historial" styleClass="label_dashboard_alumno"/>
 
         <Region prefHeight="90.0" />
 
-        <HBox fx:id="bocadilloContainer" BorderPane.alignment="CENTER" styleClass="hbox-container"/>
     </VBox>
 
 </AnchorPane>

@@ -31,7 +31,7 @@ public class LoginController {
         UsuarioDao usuarioDao = new UsuarioDao();
         Usuario usuario = usuarioDao.validar_login(email, password);
 
-        if (usuario != null) {
+        if (usuario != null ) {
             UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/DashboardAlumno.fxml"));
@@ -45,7 +45,21 @@ public class LoginController {
             // Cerrar la ventana de login
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-        } else {
+        }/* else if (usuario != null && usuario.getTipo().equals("Cocina")) { //TODO revisar porque no distingue
+            UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
+
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/HistorialBocadillo.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+            Stage stage = new Stage();
+            stage.setTitle("Cocina");
+            stage.setScene(scene);
+            stage.show();
+
+            // Cerrar la ventana de login
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+        }*/ else {
             // Mostrar un mensaje de error si las credenciales son incorrectas
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error de inicio de sesión");

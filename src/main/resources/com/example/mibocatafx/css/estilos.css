@@ -1,26 +1,62 @@
-/* Estilo global para todos los botones */
-Button {
-    -fx-background-color: #E3D0A2;
-    -fx-border-color: #000000;
-    -fx-border-width: 2px;
-    -fx-padding: 10px 30px;
-    -fx-font-weight: bold;
-    -fx-font-size:15px;
-    -fx-cursor: hand;
+/* Estilos para VBox */
+.vbox-padding {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
 }
 
-Label{
+/* Estilos para ToolBar */
+.toolbar {
+    -fx-background-color: #FFF4D9;
+    -fx-pref-Height:125.0;
+    -fx-pref-Width:200.0;
+}
+
+/* Estilos para botones */
+.button {
+    -fx-background-color: #FFF4D9;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
     -fx-font-weight: bold;
 }
 
-/* Estilo específico para botones con la clase custom-button */
-.custom-button {
-    -fx-background-color: #7EFA75;
-    -fx-border-color: #000000;
-    -fx-border-width: 3px;
-    -fx-padding: 5px;
+/* Estilos para Label Seleccion bocadillo */
+.label_dashboard_alumno {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
 }
-Toolbar{
-    -fx-background-color: #7EFA75;
+
+/* Estilos para contenedores de seleccion bocadillo */
+.hbox-container {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-spacing:10.0;
+    -fx-alignment: top_center;
+}
+
+/* Estilos hbox de los botones del toolbar */
+.hbox-right {
+    -fx-spacing: 20;
+    -fx-padding: 0 20 0 0;
+    -fx-alignment: center-right;
+}
+
+/* Estilos para campos de password y user login */
+#passwordField , #usernameField{
+    -fx-alignment: center;
+    -fx-max-width: 400;
+}
+
+/* Estilos imagen login */
+#image_login{
+    -fx-fit-Height:200;
+    -fx-fit-Width:300;
+    -fx-preserve-Ratio:true;
+}
+
+/* Estilos botones toolbar */
+#btnHistorial, #btnCerrarSesion{
+    -fx-pref-Height:30.0;
+    -fx-pref-Width:73.0;
 
 }
