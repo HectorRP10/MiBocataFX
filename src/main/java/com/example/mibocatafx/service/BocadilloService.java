@@ -13,8 +13,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 public class BocadilloService {
 
@@ -36,10 +38,18 @@ public class BocadilloService {
         return bocadilloDao.getPaginated();
     }
 
-    public List<Bocadillo> getByDiaSemana(String diaSemana) {
-        return bocadilloDao.getByDiaSemana(diaSemana);
+    /**
+     *
+     * Este método obtiene los bocadillos según el la abreviatura
+     */
+    public List<Bocadillo> getBocadilloDia(String diaSemana) {
+        return bocadilloDao.getBocadilloDia(diaSemana);
     }
 
+    /**
+     *
+     * Este método devuelve la abreviatra como esta en la BD
+     */
     public String obtenerAbreviaturaDia(DayOfWeek dia) {
         switch (dia) {
             case MONDAY: return "L";
@@ -53,40 +63,49 @@ public class BocadilloService {
         }
     }
 
-    private void insertarPedido(Bocadillo bocadillo) {
-        if (bocadillo != null) {
-            Pedido nuevoPedido = new Pedido();
-            nuevoPedido.setId_alumno(UsuarioSesion.obtenerUsuarioActual().getId());
-            nuevoPedido.setId_bocadillo(bocadillo.getId());
-            nuevoPedido.setFecha(new Date());
-            nuevoPedido.setPrecio(bocadillo.getPrecio());
-            nuevoPedido.setId_descuento(null);
-            pedidoService.insertarPedido(nuevoPedido);
-        }
-    }
-
+    /**
+     *
+     * Este método muestra por pantalla los bocadillos del dia
+     */
     public void cargarBocadillos(HBox bocadilloContainer) {
         DayOfWeek diaActual = LocalDate.now().getDayOfWeek();
         String diaSemana = obtenerAbreviaturaDia(diaActual);
-        List<Bocadillo> bocadillos = getByDiaSemana(diaSemana);
+        List<Bocadillo> bocadillos = getBocadilloDia(diaSemana);
 
         bocadilloContainer.getChildren().clear();
+
+        // Lista para almacenar todos los bocadillos en pantalla
+        List<HBox> listaBocadillos = new ArrayList<>();
+
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+        Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        // Buscar los pedidos del alumno
+        List<Pedido> pedidos = pedidoService.getPedidoAlumno(UsuarioSesion.obtenerUsuarioActual().getId(), fecha);
 
         for (Bocadillo bocadillo : bocadillos) {
             HBox bocadilloBox = new HBox(10);
             bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #f9f9f9;");
 
-            if (bocadillo.getTipo().equals("frio")) {
-                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #89E9A8;");
-            } else if (bocadillo.getTipo().equals("caliente")) {
-                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #F25F5F;");
+            // Verificar si ya existe un pedido para este bocadillo
+            boolean existePedidoParaBocadillo = pedidos.stream().anyMatch(pedido -> pedido.getId_bocadillo() == bocadillo.getId());
+
+            //Asignar el color al iniciar app
+            if (existePedidoParaBocadillo) {
+                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #FFDDC1;"); // Beige
+            } else {
+                if (bocadillo.getTipo().equals("frio")) {
+                    bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #89E9A8;"); // Verde
+                } else if (bocadillo.getTipo().equals("caliente")) {
+                    bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #F25F5F;"); // Rojo
+                }
             }
 
             bocadilloBox.setUserData(bocadillo);
             bocadilloBox.setOnMouseClicked(event -> {
                 Bocadillo seleccionado = (Bocadillo) bocadilloBox.getUserData();
                 System.out.println("Bocadillo seleccionado: " + seleccionado.getNombre());
-                insertarPedido(seleccionado);
+                pedidoService.gestionarPedido(seleccionado, bocadilloBox, listaBocadillos); // Actualizar el color dinámicamente
             });
 
             Label nombreLabel = new Label(bocadillo.getNombre());
@@ -104,6 +123,9 @@ public class BocadilloService {
             VBox textoBox = new VBox(5, nombreLabel, ingredientesLabel, precioLabel);
             bocadilloBox.getChildren().addAll(textoBox);
             bocadilloContainer.getChildren().addAll(bocadilloBox, new Separator());
+
+            // Añadir el HBox a la lista
+            listaBocadillos.add(bocadilloBox);
         }
     }
 }

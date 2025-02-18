@@ -4,7 +4,6 @@ import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class BocadilloDao {
@@ -40,7 +39,7 @@ public class BocadilloDao {
         }
     }
 
-    public List<Bocadillo> getByDiaSemana(String diaSemana) {
+    public List<Bocadillo> getBocadilloDia(String diaSemana) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM Bocadillo WHERE Dia_semana = :diaSemana", Bocadillo.class)
                     .setParameter("diaSemana", diaSemana)
