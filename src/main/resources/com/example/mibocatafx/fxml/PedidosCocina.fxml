@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.mibocatafx.controller.PedidosCocinaController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.PedidosCocinaController">
+   <children>
+      <TableView fx:id="tabla" layoutY="63.0" prefHeight="228.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="tabla_id" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="tabla_nombreAlumno" prefWidth="75.0" text="Alumno" />
+            <TableColumn fx:id="tabla_bocadillo" prefWidth="75.0" text="Bocadillo" />
+            <TableColumn fx:id="precio" prefWidth="75.0" text="Precio" />
+            <TableColumn fx:id="tabla_descuento" prefWidth="75.0" text="Descuento" />
+            <TableColumn fx:id="fecha" prefWidth="75.0" text="Fecha" />
+            <TableColumn fx:id="retirado" prefWidth="75.0" text="Retirado" />
+            <TableColumn fx:id="tabla_retirar" prefWidth="75.0" text="Retirar" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnAnterior" layoutX="227.0" layoutY="299.0" mnemonicParsing="false" onAction="#anteriorPagina" text="&lt;" />
+      <Button fx:id="btnSiguiente" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#siguientePagina" text="&gt;" />
+      <TextField fx:id="txtPagina" layoutX="252.0" layoutY="299.0" prefHeight="26.0" prefWidth="96.0" />
+      <ComboBox fx:id="tipoBocadillo" layoutX="22.0" layoutY="22.0" prefHeight="26.0" prefWidth="118.0" promptText="Tipo" />
+      <Button fx:id="filtrar" layoutX="166.0" layoutY="22.0" mnemonicParsing="false" onAction="#findBuscador" text="Filtrar" />
+      <Label fx:id="lblTotalPaginas" layoutX="286.0" layoutY="347.0" />
+   </children>
 </AnchorPane>

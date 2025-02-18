@@ -1,28 +1,29 @@
 package com.example.mibocatafx.service;
 
 import com.example.mibocatafx.dao.PedidoDao;
+import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.models.Pedido;
 
+import java.util.Date;
 import java.util.List;
 
 public class PedidoService {
-    private final PedidoDao pedidoDao = new PedidoDao();
 
-    public void save(Pedido pedido) {
-        // Validación antes de guardar
-        if ( pedido.getId() == 0) {
-            throw new IllegalArgumentException("El ID no puede estar vacío.");
-        }
+    private PedidoDao pedidoDao;
 
-        pedidoDao.save(pedido);
+    public PedidoService() {
+        this.pedidoDao = new PedidoDao();
     }
 
-    public List<Pedido> getAll() {
-        return pedidoDao.getAll();
+    public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro) {
+        return pedidoDao.obtenerPedidosPorFecha(fecha, paginaActual, pedidosPorPagina, tipoFiltro);
     }
 
-    public List<Pedido> getPaginated() {
-        return pedidoDao.getPaginated();
+    public int obtenerTotalPedidos(Date fecha, Bocadillo.Tipo tipoFiltro) {
+        return pedidoDao.obtenerTotalPedidos(fecha, tipoFiltro);
     }
 
+    public void actualizarPedido(Pedido pedido) {
+        pedidoDao.actualizarPedido(pedido);
+    }
 }

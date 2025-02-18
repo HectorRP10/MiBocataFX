@@ -1,193 +1,173 @@
-/*package com.example.mibocatafx.controller;
+package com.example.mibocatafx.controller;
 
+import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.models.Pedido;
 import com.example.mibocatafx.service.PedidoService;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class PedidosCocinaController implements Initializable {
-
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextField txtApellido1;
-    @FXML
-    private ComboBox cboEspecialidad;
+public class PedidosCocinaController {
 
     @FXML
-    private TableView tabla;
+    private TableView<Pedido> tabla;
     @FXML
-    private TableColumn tabla_id;
+    private TableColumn<Pedido, Integer> tabla_id;
     @FXML
-    private TableColumn tabla_nombreAlumno;
+    private TableColumn<Pedido,String> tabla_nombreAlumno;
     @FXML
-    private TableColumn tabla_bocadillo;
+    private TableColumn<Pedido,String> tabla_bocadillo;
     @FXML
-    private TableColumn tabla_descuento;
+    private TableColumn<Pedido,String> tabla_descuento;
     @FXML
-    private TableColumn precio;
+    private TableColumn<Pedido, Double> precio;
     @FXML
-    private TableColumn fecha;
+    private TableColumn<Pedido,String> fecha;
     @FXML
-    private TableColumn retirado;
+    private TableColumn<Pedido,String> retirado;
     @FXML
-    private TableColumn retirar;
+    private TableColumn<Pedido, Void> tabla_retirar;
+    private ObservableList<Pedido> pedidosList;
+    private Bocadillo.Tipo tipoFiltroActual = null;
+
+    private int paginaActual = 1;
+    private int pedidosPorPagina = 5;
+
+    private PedidoService pedidoService;
 
     @FXML
     private Button btnAnterior;
     @FXML
     private Button btnSiguiente;
     @FXML
+    private Button filtrar;
+    @FXML
+    private ComboBox<Bocadillo.Tipo> tipoBocadillo;
+    @FXML
     private TextField txtPagina;
     @FXML
-    private Label lblTotal;
-    private static final int OFFSET=20;
+    private Label lblTotalPaginas;
 
-    private HashMap<String, String> filtros = new HashMap<>();
-    private long totalPedidos;
-
-
-    @FXML
-    protected void mostrarPedidos() throws IOException {
-
-        PedidoService pedidoService = new PedidoService();
-        List<Pedido> pedidos = pedidoService.getPaginated();
-        for(Pedido pedido : pedidos)
-        {
-            //imprimimos el objeto pivote
-            System.out.println(pedido.toString());
-        }
+    public PedidosCocinaController() {
+        this.pedidoService = new PedidoService();
     }
 
-    public void rellenaTabla(List<Pedido> pedidos){
-        try {
-            tabla.setItems(FXCollections.observableArrayList(pedidos));
+    @FXML
+    void initialize() {
+        // Configurar las columnas
+        tabla_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tabla_nombreAlumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getNombre()));
+        tabla_bocadillo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBocadillo().getNombre()));
+        precio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        tabla_descuento.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId_descuento() != null ?
+                cellData.getValue().getId_descuento().getNombre() : "Ninguno"));
+        fecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        retirado.setCellValueFactory(new PropertyValueFactory<>("retirado"));
 
-            tabla_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-            tabla_nombreAlumno.setCellValueFactory(new PropertyValueFactory<>("id_alumno"));
-            tabla_bocadillo.setCellValueFactory(new PropertyValueFactory<Pedido, String>("id_bocadillo"));
+        tabla_retirar.setCellFactory(param -> {
+            TableCell<Pedido, Void> cell = new TableCell<Pedido, Void>() {
+                private final Button btnRetirar = new Button("Retirar");
 
-            // Opción más sencilla para mostrar el valor de un atributo de tipo objeto
-            //tabla_especialidad.setCellValueFactory(data-> new SimpleStringProperty(data.getValue()));
-
-            // Similar a la anterior pero más detallada
-            /*tabla_especialidad.setCellValueFactory(cellData -> {
-                // Obtener el objeto Medico
-                Medico medico = (Medico) cellData.getValue();
-
-                // Si la especialidad no es nula, devolver su nombre, si no, devolver una cadena vacía
-                return new SimpleStringProperty(
-                        medico != null && medico.getEspecialidad() != null ? medico.getEspecialidad().getNombre() : ""
-                );
-            });
-             */
-/*
-            // Opción por si no va el getValue() del Object
-            tabla_especialidad.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pedido, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Pedido, String> cellData) {
-                    Pedido pedido = cellData.getValue(); // Obtener el objeto Medico
-                    return new SimpleStringProperty(
-                            (pedido != null && pedido.getEspecialidad() != null) ? pedido.getEspecialidad().getNombre() : ""
-                    );
+                {
+                    btnRetirar.setOnAction(event -> retirarPedido(getTableRow().getItem()));
                 }
-            });
 
-        } catch (Exception e) {
-            // TODO Mettre une popup erreur base de données
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btnRetirar);
+                    }
+                }
+            };
+            return cell;
+        });
 
-        // Rellenar el combo de Especialidades
-        EspecialidadService especialidadService = new EspecialidadService();
-        List<Especialidad> especialidades = especialidadService.getAll();
-        for (Especialidad especialidad: especialidades){
-            cboEspecialidad.getItems().add(especialidad.getNombre());
-        }
+        // Inicializar la lista observable
+        pedidosList = FXCollections.observableArrayList();
+        tabla.setItems(pedidosList);
 
-        // Rellena la tabla con la primera página sin filtros
-        PedidoService medicoService = new PedidoService();
-        List<Pedido> medicos = medicoService.getPaginated(1, OFFSET, null);
-        rellenaTabla(medicos);
-        totalPedidos = medicoService.cout(null);
-        lblTotal.setText("Total registros: "+ totalPedidos +" - Total páginas: "+Math.round(Math.ceil((float) totalPedidos /(float)OFFSET)));
-    }
+        // Configurar el ComboBox
+        cargarTiposDeBocadillos();
 
-    @FXML
-    public void findBuscador(){
-        filtros.clear();
-
-        // Construcción de un HashMap con los filtros
-        if (!txtNombre.getText().isEmpty())
-            filtros.put("nombre", txtNombre.getText());
-        if (!txtApellido1.getText().isEmpty())
-            filtros.put("apellidos", txtApellido1.getText());
-        if (cboEspecialidad.getValue() != null)
-            filtros.put("especialidad", (String) cboEspecialidad.getValue());
-
-
-        PedidoService pedidoService = new PedidoService();
-        totalPedidos = pedidoService.cout(filtros);
-        List<Pedido> medicos = pedidoService.getPaginated(1, OFFSET, filtros);
-        rellenaTabla(medicos);
-
-        txtPagina.setText("1");
-        btnSiguiente.setDisable(false);
-        lblTotal.setText("Total registros: "+ totalPedidos +" - Total páginas: "+Math.round(Math.ceil((float) totalPedidos /(float)OFFSET)));
-
+        // Cargar los datos
+        cargarDatos();
     }
 
     @FXML
-    public void siguientePagina(){
-        int page = Integer.parseInt(txtPagina.getText());
-        page++;
-
-        PedidoService medicoService = new PedidoService();
-        List<Pedido> medicos = medicoService.getPaginated(page, OFFSET, filtros);
-        if (!medicos.isEmpty()) {
-            rellenaTabla(medicos);
-
-            txtPagina.setText(page + "");
-            btnAnterior.setDisable(false);
-        } else {
-            btnSiguiente.setDisable(true);
+    void anteriorPagina(ActionEvent event) {
+        if (paginaActual > 1) {
+            paginaActual--;
+            cargarDatos();
         }
     }
 
     @FXML
-    public void anteriorPagina(){
-        int page = Integer.parseInt(txtPagina.getText());
-        page--;
+    void siguientePagina(ActionEvent event) {
+        int totalPaginas = (int) Math.ceil((double) pedidoService.obtenerTotalPedidos(obtenerFechaHoy(), tipoFiltroActual) / pedidosPorPagina);
 
-        if (page>0) {
-            PedidoService pedidoService = new PedidoService();
-            List<Pedido> pedidos = PedidoService.getPaginated(page, OFFSET, filtros);
-            if (!pedidos.isEmpty()) {
-                rellenaTabla(pedidos);
-                txtPagina.setText(page + "");
-                btnSiguiente.setDisable(false);
-            } else {
-                btnAnterior.setDisable(true);
-            }
-        } else {
-            btnAnterior.setDisable(true);
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            cargarDatos();
         }
     }
 
+    @FXML
+    void findBuscador(ActionEvent event) {
+        tipoFiltroActual = tipoBocadillo.getValue();
+        cargarDatos();
+    }
 
-}*/
+    private void cargarDatos() {
+        Date fechaHoy = obtenerFechaHoy();
+        List<Pedido> pedidos = pedidoService.obtenerPedidosPorFecha(fechaHoy, paginaActual, pedidosPorPagina, tipoFiltroActual);
+        pedidosList.clear();
+        pedidosList.addAll(pedidos);
+        actualizarTotalPaginas();
+
+        txtPagina.setText(String.valueOf(paginaActual));
+    }
+
+    private Date obtenerFechaHoy() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    private void cargarTiposDeBocadillos() {
+        tipoBocadillo.setItems(FXCollections.observableArrayList(Bocadillo.Tipo.values()));
+    }
+
+    private void actualizarTotalPaginas() {
+        int totalPedidos = pedidoService.obtenerTotalPedidos(obtenerFechaHoy(), tipoFiltroActual);
+
+        int totalPaginas = (int) Math.ceil((double) totalPedidos / pedidosPorPagina);
+        lblTotalPaginas.setText("Página " + paginaActual + " de " + totalPaginas);
+    }
+
+    private void retirarPedido(Pedido pedido) {
+        if (pedido != null) {
+
+            pedido.setRetirado(obtenerFechaHoy());
+
+            // Llamar al servicio para actualizar el pedido
+            pedidoService.actualizarPedido(pedido);
+
+            // Recargar los datos de la tabla después de actualizar
+            cargarDatos();
+        }
+    }
+}

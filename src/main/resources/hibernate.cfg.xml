@@ -12,6 +12,12 @@
 
         <mapping class="com.example.mibocatafx.models.Bocadillo"/>
         <mapping class="com.example.mibocatafx.models.Usuario"/>
+        <mapping class="com.example.mibocatafx.models.Pedido"/>
+        <mapping class="com.example.mibocatafx.models.Alumno"/>
+        <mapping class="com.example.mibocatafx.models.Alergenos"/>
+        <mapping class="com.example.mibocatafx.models.Curso"/>
+        <mapping class="com.example.mibocatafx.models.Descuento"/>
+
 
     </session-factory>
 </hibernate-configuration>

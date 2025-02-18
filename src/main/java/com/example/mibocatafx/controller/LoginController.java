@@ -48,7 +48,8 @@ public class LoginController {
             } else if (usuario.getTipo()==Usuario.Tipo.Cocina) {
                 UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
 
-                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/HistorialBocadillo.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/com/example/mibocatafx/fxml/PedidosCocina.fxml"));
+
                 Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
                 Stage stage = new Stage();

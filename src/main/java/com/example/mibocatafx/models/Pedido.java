@@ -7,6 +7,7 @@ import java.util.Date;
 @Table(name = "pedidos")
 public class Pedido {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @ManyToOne
@@ -27,6 +28,15 @@ public class Pedido {
 
     public Pedido(){
 
+    }
+
+    public Pedido(Alumno alumno, Bocadillo bocadillo, Descuento id_descuento, double precio, Date fecha, Date retirado) {
+        this.alumno = alumno;
+        this.bocadillo = bocadillo;
+        this.id_descuento = id_descuento;
+        this.precio = precio;
+        this.fecha = fecha;
+        this.retirado = retirado;
     }
 
     public int getId() {
