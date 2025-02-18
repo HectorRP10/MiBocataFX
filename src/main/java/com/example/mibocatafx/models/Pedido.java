@@ -8,13 +8,16 @@ import java.util.Date;
 public class Pedido {
     @Id
     @Column(name = "id")
-    private Integer id;
-    @Column(name = "id_alumno",nullable = false)
-    private int id_alumno;
-    @Column(name = "id_bocadillo",nullable = false)
-    private int id_bocadillo;
-    @Column(name = "id_descuento",nullable = true)
-    private int id_descuento;
+    private int id;
+    @ManyToOne
+    @JoinColumn(name = "id_alumno",nullable = false)
+    private Alumno alumno;
+    @ManyToOne
+    @JoinColumn(name = "id_bocadillo",nullable = false)
+    private Bocadillo bocadillo;
+    @ManyToOne
+    @JoinColumn(name = "id_descuento",nullable = true)
+    private Descuento id_descuento;
     @Column(name = "precio", nullable=true)
     private double precio;
     @Column(name = "fecha", nullable = false)
@@ -26,17 +29,7 @@ public class Pedido {
 
     }
 
-    public Pedido(int id, int id_alumno, int id_bocadillo, int id_descuento, double precio, Date fecha, Date retirado) {
-        this.id = id;
-        this.id_alumno = id_alumno;
-        this.id_bocadillo = id_bocadillo;
-        this.id_descuento = id_descuento;
-        this.precio = precio;
-        this.fecha = fecha;
-        this.retirado = retirado;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -44,27 +37,27 @@ public class Pedido {
         this.id = id;
     }
 
-    public int getId_alumno() {
-        return id_alumno;
+    public Alumno getAlumno() {
+        return alumno;
     }
 
-    public void setId_alumno(int id_alumno) {
-        this.id_alumno = id_alumno;
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
     }
 
-    public int getId_bocadillo() {
-        return id_bocadillo;
+    public Bocadillo getBocadillo() {
+        return bocadillo;
     }
 
-    public void setId_bocadillo(int id_bocadillo) {
-        this.id_bocadillo = id_bocadillo;
+    public void setBocadillo(Bocadillo bocadillo) {
+        this.bocadillo = bocadillo;
     }
 
-    public int getId_descuento() {
+    public Descuento getId_descuento() {
         return id_descuento;
     }
 
-    public void setId_descuento(int id_descuento) {
+    public void setId_descuento(Descuento id_descuento) {
         this.id_descuento = id_descuento;
     }
 
@@ -94,11 +87,11 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "Pedido{" +
+        return "Pedidos{" +
                 "id=" + id +
-                ", id_alumno=" + id_alumno +
-                ", id_bocadillo=" + id_bocadillo +
-                ", id_descuento=" + id_descuento +
+                ", alumno=" + alumno.getId() +
+                ", bocadillo=" + bocadillo.getNombre() +
+                ", descuento=" + id_descuento +
                 ", precio=" + precio +
                 ", fecha=" + fecha +
                 ", retirado=" + retirado +

@@ -20,7 +20,7 @@ public class BocadilloService {
 
     public void save(Bocadillo bocadillo) {
         // Validación antes de guardar
-        if (bocadillo.getId() == null || bocadillo.getId() == 0) {
+        if ( bocadillo.getId() == 0) {
             throw new IllegalArgumentException("El ID no puede estar vacío.");
         }
 

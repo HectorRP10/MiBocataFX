@@ -10,7 +10,7 @@ public class PedidoService {
 
     public void save(Pedido pedido) {
         // Validación antes de guardar
-        if (pedido.getId() == null || pedido.getId() == 0) {
+        if ( pedido.getId() == 0) {
             throw new IllegalArgumentException("El ID no puede estar vacío.");
         }
 
