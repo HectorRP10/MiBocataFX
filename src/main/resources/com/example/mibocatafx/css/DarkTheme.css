@@ -1,0 +1,35 @@
+.root {
+    -fx-background-color: #282c34; /* Fondo oscuro para toda la ventana */
+}
+
+.border-pane {
+    -fx-background-color: #383c44; /* Fondo un poco más claro para el BorderPane */
+}
+
+.label {
+    -fx-text-fill: #e0e0e0; /* Texto claro para las etiquetas */
+}
+
+.button {
+    -fx-background-color: #4CAF50; /* Verde para los botones */
+    -fx-text-fill: white;
+}
+
+.text-field {
+    -fx-background-color: #444; /* Fondo oscuro para los campos de texto */
+    -fx-text-fill: #e0e0e0;
+}
+
+.combo-box{
+    -fx-background-color: #444;
+    -fx-text-fill: #e0e0e0;
+}
+
+.table-view {
+    -fx-background-color: #444;
+}
+
+.table-column {
+    -fx-background-color: #555;
+    -fx-text-fill: #e0e0e0;
+}
