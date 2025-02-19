@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -10,7 +8,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <VBox spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" alignment="TOP_CENTER">
-        <Label text="Esto es el historial" styleClass="label_dashboard_alumno"/>
+        <Label text="Historial pedidos" styleClass="label_dashboard_alumno"/>
 
         <Region prefHeight="90.0" />
     </VBox>
