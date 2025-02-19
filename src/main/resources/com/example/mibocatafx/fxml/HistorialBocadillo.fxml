@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/DarkTheme.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.HistorialController">
 
-    <VBox spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" alignment="TOP_CENTER">
-        <Label text="Historial pedidos" styleClass="label_dashboard_alumno"/>
 
-        <Region prefHeight="90.0" />
-    </VBox>
+    <center>
 
-</AnchorPane>
+        <VBox prefHeight="135.0" prefWidth="600.0" spacing="5.0" BorderPane.alignment="CENTER">
+            <Label text="Esto es el historial" styleClass="label_dashboard_alumno"/>
+
+            <children>
+
+                <Region prefHeight="90.0" />
+                <Region prefHeight="90.0" />
+                <HBox prefHeight="42.0" prefWidth="600.0" spacing="5.0">
+
+                    <children>
+                        <TextField fx:id="txtNombre" promptText="Nombre" />
+                        <ComboBox fx:id="cboEspecialidad" prefWidth="150.0" promptText="Tipo" />
+                        <Button fx:id="find" mnemonicParsing="false" text="Filtrar" onAction="#findBuscador"/>
+                    </children>
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding>
+                </HBox>
+
+
+
+                <TableView fx:id="tabla" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn fx:id="tabla_fecha" editable="false" prefWidth="75.0" text="Fecha" />
+                        <TableColumn fx:id="tabla_nombre" editable="false" prefWidth="75.0" text="Nombre" />
+                        <TableColumn fx:id="tabla_precio" prefWidth="75.0" text="Precio" />
+                    </columns>
+                </TableView>
+
+
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5">
+                    <children>
+                        <Button fx:id="btnAnterior" disable="true" mnemonicParsing="false" text="&lt;" onAction="#anteriorPagina"/>
+                        <TextField fx:id="txtPagina" editable="false" text="1" />
+                        <Button fx:id="btnSiguiente" mnemonicParsing="false" text="&gt;" onAction="#siguientePagina"/>
+                    </children>
+                </HBox>
+
+
+
+
+
+
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

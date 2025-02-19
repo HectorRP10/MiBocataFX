@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class PedidoService {
@@ -25,8 +26,12 @@ public class PedidoService {
         return pedidoDao.getAll();
     }
 
-    public List<Pedido> getPaginated() {
-        return pedidoDao.getPaginated();
+    public List<Pedido> getPaginated(int page, int offset, HashMap<String, String> filtros) {
+        return pedidoDao.getPaginated(page, offset, filtros);
+    }
+
+    public long cout(HashMap<String, String> filtros) {
+        return pedidoDao.cout(filtros);
     }
 
     /**
