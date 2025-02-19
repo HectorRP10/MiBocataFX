@@ -42,7 +42,13 @@ public class DashboardAlumnoController implements Initializable {
     }
     @FXML
     private void btnHistorialPedidos(ActionEvent event)throws IOException{
-        BorderPane view= FXMLLoader.load(getClass().getResource("/com/example/mibocatafx/fxml/HistorialBocadillo.fxml"));
+
+        AnchorPane view= FXMLLoader.load(getClass().getResource("/com/example/mibocatafx/fxml/HistorialBocadillo.fxml"));
+        AnchorPane.setTopAnchor(view, 0.0);
+        AnchorPane.setLeftAnchor(view, 0.0);
+        AnchorPane.setBottomAnchor(view, 0.0);
+        AnchorPane.setRightAnchor(view, 0.0);
+
         borderPane.setCenter(view);
 
         /*

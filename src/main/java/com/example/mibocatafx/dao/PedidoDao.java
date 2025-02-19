@@ -1,30 +1,44 @@
 package com.example.mibocatafx.dao;
 
+import com.example.mibocatafx.models.Alumno;
+import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.models.Pedido;
+import com.example.mibocatafx.models.Usuario;
 import com.example.mibocatafx.util.HibernateUtil;
 import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PedidoDao {
-    public void save(Pedido pedido) {
-        Transaction transaction = null;
+
+    public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.saveOrUpdate(pedido);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                System.out.println("Pedido no es nulo");
-                transaction.rollback();
+            String consulta = "FROM Pedido p WHERE p.fecha >= :fecha AND p.retirado IS NULL";
+            if (tipoFiltro != null) {
+                consulta += " AND p.bocadillo.tipo = :tipoBocadillo";
             }
-            e.printStackTrace();
+            var query = session.createQuery(consulta, Pedido.class)
+                    .setParameter("fecha", fecha)
+                    .setFirstResult((paginaActual - 1) * pedidosPorPagina)
+                    .setMaxResults(pedidosPorPagina);
+
+            // Si se está filtrando por tipo de bocadillo, añadir el parámetro
+            if (tipoFiltro != null) {
+                query.setParameter("tipoBocadillo", tipoFiltro);
+            }
+
+            return query.list();
         }
     }
 
@@ -35,8 +49,6 @@ public class PedidoDao {
     }
 
     public List<Pedido> getPaginated(int page, int offset, HashMap<String, String> filtros) {
-
-
         // Separando para añadir de forma dinámica los filtros
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             StringBuilder hql = new StringBuilder("FROM Pedido p WHERE true");
@@ -103,10 +115,10 @@ public class PedidoDao {
 
 
 
-    public List<Pedido> getPedidoAlumno(int idAlumno, Date fecha) {
+    public List<Pedido> getPedidoAlumno(Alumno idAlumno, Date fecha) {
         LocalDate fechaSinHora = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            TypedQuery<Pedido> query = session.createQuery("FROM Pedido WHERE id_alumno = :idAlumno AND CAST(fecha AS localdate) = :fecha", Pedido.class);
+            TypedQuery<Pedido> query = session.createQuery("FROM Pedido WHERE alumno = :idAlumno AND CAST(fecha AS localdate) = :fecha", Pedido.class);
             query.setParameter("idAlumno", idAlumno);
             query.setParameter("fecha", fechaSinHora);
             return query.getResultList();
@@ -122,12 +134,22 @@ public class PedidoDao {
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
+
             }
-            e.printStackTrace();
         }
     }
 
-    public void update(Pedido pedido) {
+
+
+
+
+
+
+
+
+
+
+    public void update (Pedido pedido){
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -140,5 +162,74 @@ public class PedidoDao {
             e.printStackTrace();
         }
     }
+
+
+    public int obtenerTotalPedidos (Date fecha, Bocadillo.Tipo tipoFiltro){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String consulta = "SELECT COUNT(p) FROM Pedido p WHERE p.fecha >= :fecha AND p.retirado IS NULL";
+
+            // Si hay un tipo de bocadillo seleccionado, añadirlo a la consulta
+            if (tipoFiltro != null) {
+                consulta += " AND p.bocadillo.tipo = :tipoBocadillo";
+            }
+
+            var query = session.createQuery(consulta)
+                    .setParameter("fecha", fecha);
+
+            // Si se está filtrando por tipo de bocadillo, añadir el parámetro
+            if (tipoFiltro != null) {
+                query.setParameter("tipoBocadillo", tipoFiltro);
+            }
+
+            return ((Long) query.uniqueResult()).intValue();
+        }
+    }
+
+    public void actualizarPedido (Pedido pedido){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(pedido);
+            transaction.commit();
+        }
+    }
+
+    public void save(Pedido pedido) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(pedido);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                System.out.println("Pedido no es nulo");
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+
+    public Alumno obtenerAlumno(Usuario usuario) {
+        Alumno alumno = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Alumno> resultado = session.createQuery("FROM Alumno WHERE id = :idUsuario", Alumno.class)
+                    .setParameter("idUsuario", usuario.getId())
+                    .getResultList();
+
+            if (!resultado.isEmpty()) {
+                alumno = resultado.get(0);
+            } else {
+                System.out.println("No se encontró el alumno con id: " + usuario.getId());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alumno;
+    }
+
+
 
 }

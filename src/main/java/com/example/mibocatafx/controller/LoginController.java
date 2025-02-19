@@ -33,25 +33,42 @@ public class LoginController {
 
         if (usuario != null ) {
             UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
+            if (usuario.getTipo() == Usuario.Tipo.Alumno) {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/DashboardAlumno.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/DashboardAlumno.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+                Stage stage = new Stage();
+                stage.setTitle("Alumno");
+                stage.setScene(scene);
+                stage.show();
 
-            Stage stage = new Stage();
-            stage.setTitle("Alumno");
-            stage.setScene(scene);
-            stage.show();
+                // Cerrar la ventana de login
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                currentStage.close();
+            } else if (usuario.getTipo()==Usuario.Tipo.Cocina) {
+                UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
 
-            // Cerrar la ventana de login
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-        }else {
-            // Mostrar un mensaje de error si las credenciales son incorrectas
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error de inicio de sesión");
-            alert.setHeaderText(null);
-            alert.setContentText("Usuario o contraseña incorrectos.");
-            alert.showAndWait();
+
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/com/example/mibocatafx/fxml/PedidosCocina.fxml"));
+
+                Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+                Stage stage = new Stage();
+                stage.setTitle("Cocina");
+                stage.setScene(scene);
+                stage.show();
+
+                // Cerrar la ventana de login
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                currentStage.close();
+            } else{
+                // Mostrar un mensaje de error si las credenciales son incorrectas
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de inicio de sesión");
+                alert.setHeaderText(null);
+                alert.setContentText("Usuario o contraseña incorrectos.");
+                alert.showAndWait();
+            }
         }
     }
 }

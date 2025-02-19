@@ -24,7 +24,8 @@ public class BocadilloService {
     private final PedidoService pedidoService = new PedidoService();
 
     public void save(Bocadillo bocadillo) {
-        if (bocadillo.getId() == null || bocadillo.getId() == 0) {
+        // Validación antes de guardar
+        if ( bocadillo.getId() == 0) {
             throw new IllegalArgumentException("El ID no puede estar vacío.");
         }
         bocadilloDao.save(bocadillo);
@@ -81,14 +82,14 @@ public class BocadilloService {
         LocalDate fechaActual = LocalDate.now();
         Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
         // Buscar los pedidos del alumno
-        List<Pedido> pedidos = pedidoService.getPedidoAlumno(UsuarioSesion.obtenerUsuarioActual().getId(), fecha);
+        List<Pedido> pedidos = pedidoService.getPedidoAlumno(pedidoService.obtenerAlumno(UsuarioSesion.obtenerUsuarioActual()), fecha);
 
         for (Bocadillo bocadillo : bocadillos) {
             HBox bocadilloBox = new HBox(10);
             bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #f9f9f9;");
 
             // Verificar si ya existe un pedido para este bocadillo
-            boolean existePedidoParaBocadillo = pedidos.stream().anyMatch(pedido -> pedido.getId_bocadillo() == bocadillo.getId());
+            boolean existePedidoParaBocadillo = pedidos.stream().anyMatch(pedido -> pedido.getBocadillo().getId() == bocadillo.getId());
 
             //Asignar el color al iniciar app
             if (existePedidoParaBocadillo) {

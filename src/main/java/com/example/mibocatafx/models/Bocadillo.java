@@ -2,66 +2,123 @@ package com.example.mibocatafx.models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "bocadillos")
 public class Bocadillo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "INT")
-    private Integer id;
-
-    @Column(nullable = false)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "nombre",nullable = false)
     private String nombre;
-
-    @Column(nullable = false)
+    @Column(name = "precio",nullable = true)
+    private double precio;
+    @Column(name = "ingredientes",nullable = true)
     private String ingredientes;
+    public enum Tipo {
+        Caliente,
+        Frio
+    }
 
-    @Column(nullable = false)
-    private String Dia_semana;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo",nullable = false)
+    private Tipo tipo;
 
-    @Column(nullable = false)
-    private Double Precio;
+    public enum DiaSemana {
+        L,
+        M,
+        X,
+        J,
+        V
+    }
 
-    @Column(nullable = false)
-    private String Tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dia_semana",nullable = true)
+    private DiaSemana diaSemana;
+    @Column(name = "fecha_baja",nullable = true)
+    private Date fecha_baja;
 
-    // Getters y Setters
-    public Integer getId() {
+    public Bocadillo(){
+
+    }
+
+    public Bocadillo(int id, String nombre, double precio, String ingredientes, Tipo tipo, DiaSemana diaSemana, Date fecha_baja) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.ingredientes = ingredientes;
+        this.tipo = tipo;
+        this.diaSemana = diaSemana;
+        this.fecha_baja = fecha_baja;
+    }
+
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getIngredientes() { // Cambio de nombre del getter
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public String getIngredientes() {
         return ingredientes;
     }
 
-    public String getDia_semana() {
-        return Dia_semana;
-    }
-
-    public Double getPrecio() {
-        return Precio;
-    }
-
-    public String getTipo() {
-        return Tipo;
-    }
-
-
-
-    // Constructor vacío
-    public Bocadillo() {
-    }
-
-    public Bocadillo(Integer id, String nombre, String ingredientes, String dia_semana, Double precio, String tipo) {
-        this.id = id;
-        this.nombre = nombre;
+    public void setIngredientes(String ingredientes) {
         this.ingredientes = ingredientes;
-        Dia_semana = dia_semana;
-        Precio = precio;
-        Tipo = tipo;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+    public DiaSemana getDiaSemana() {
+        return diaSemana;
+    }
+
+    public void setDiaSemana(DiaSemana diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+
+    public Date getFecha_baja() {
+        return fecha_baja;
+    }
+
+    public void setFecha_baja(Date fecha_baja) {
+        this.fecha_baja = fecha_baja;
+    }
+
+    @Override
+    public String toString() {
+        return "Bocadillos{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", ingredientes='" + ingredientes + '\'' +
+                ", tipo=" + tipo +
+                ", diaSemana=" + diaSemana +
+                ", fecha_baja=" + fecha_baja +
+                '}';
     }
 }
