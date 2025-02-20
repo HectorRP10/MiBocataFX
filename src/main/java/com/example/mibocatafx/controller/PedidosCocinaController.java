@@ -70,7 +70,6 @@ public class PedidosCocinaController {
         tabla_descuento.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId_descuento() != null ?
                 cellData.getValue().getId_descuento().getNombre() : "Ninguno"));
         fecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        retirado.setCellValueFactory(new PropertyValueFactory<>("retirado"));
 
         tabla_retirar.setCellFactory(param -> {
             TableCell<Pedido, Void> cell = new TableCell<Pedido, Void>() {

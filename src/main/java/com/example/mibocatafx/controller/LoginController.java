@@ -1,4 +1,5 @@
 package com.example.mibocatafx.controller;
+
 import com.example.mibocatafx.MainApplication;
 import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.dao.UsuarioDao;
@@ -31,7 +32,7 @@ public class LoginController {
         UsuarioDao usuarioDao = new UsuarioDao();
         Usuario usuario = usuarioDao.validar_login(email, password);
 
-        if (usuario != null ) {
+        if (usuario != null) {
             UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
             if (usuario.getTipo() == Usuario.Tipo.Alumno) {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/DashboardAlumno.fxml"));
@@ -45,7 +46,7 @@ public class LoginController {
                 // Cerrar la ventana de login
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 currentStage.close();
-            } else if (usuario.getTipo()==Usuario.Tipo.Cocina) {
+            } else if (usuario.getTipo() == Usuario.Tipo.Cocina) {
                 UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
 
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/com/example/mibocatafx/fxml/PedidosCocina.fxml"));
@@ -60,7 +61,22 @@ public class LoginController {
                 // Cerrar la ventana de login
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 currentStage.close();
-            } else{
+            } else if (usuario.getTipo() == Usuario.Tipo.Admin) {
+                UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
+
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/com/example/mibocatafx/fxml/Administrador.fxml"));
+
+                Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+                Stage stage = new Stage();
+                stage.setTitle("Administrador");
+                stage.setScene(scene);
+                stage.show();
+
+                // Cerrar la ventana de login
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                currentStage.close();
+            } else {
                 // Mostrar un mensaje de error si las credenciales son incorrectas
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error de inicio de sesión");
