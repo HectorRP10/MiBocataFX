@@ -3,6 +3,7 @@ import com.example.mibocatafx.MainApplication;
 import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.dao.UsuarioDao;
 import com.example.mibocatafx.models.Usuario;
+import com.example.mibocatafx.service.BocadilloService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
+
     @FXML
     private void onLoginButtonClick(ActionEvent event) throws IOException {
         String email = usernameField.getText();
@@ -34,7 +36,7 @@ public class LoginController {
         if (usuario != null ) {
             UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
             if (usuario.getTipo() == Usuario.Tipo.Alumno) {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/DashboardAlumno.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/nav_alumno.fxml"));
                 Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
                 Stage stage = new Stage();

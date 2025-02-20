@@ -28,10 +28,15 @@ public class DashboardAlumnoController implements Initializable {
 
     @FXML
     private BorderPane borderPane;
+    private Stage stage;
+
+    @FXML
+    private AnchorPane contentPane;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         // Llamar al servicio para cargar los bocadillos
         if (bocadilloContainer != null) {
             bocadilloService.cargarBocadillos(bocadilloContainer);
@@ -40,32 +45,35 @@ public class DashboardAlumnoController implements Initializable {
         }
 
     }
+
     @FXML
     private void btnHistorialPedidos(ActionEvent event)throws IOException{
+        cargarVista("/com/example/mibocatafx/fxml/HistorialBocadillo.fxml");
 
-        AnchorPane view= FXMLLoader.load(getClass().getResource("/com/example/mibocatafx/fxml/HistorialBocadillo.fxml"));
-        AnchorPane.setTopAnchor(view, 0.0);
-        AnchorPane.setLeftAnchor(view, 0.0);
-        AnchorPane.setBottomAnchor(view, 0.0);
-        AnchorPane.setRightAnchor(view, 0.0);
-
-        borderPane.setCenter(view);
-
-        /*
-        BorderPane view1= FXMLLoader.load(getClass().getResource("/com/example/mibocatafx/fxml/nav_alumno.fxml"));
-        borderPane.setTop(view1);
-
-         */
     }
 
     @FXML
     private void btnHome(ActionEvent event)throws IOException{
-        BorderPane view= FXMLLoader.load(getClass().getResource("/com/example/mibocatafx/fxml/DashboardAlumno.fxml"));
-        borderPane.setCenter(view);
+        cargarVista("/com/example/mibocatafx/fxml/DashboardAlumno.fxml");
 
-        BorderPane view1= FXMLLoader.load(getClass().getResource("/com/example/mibocatafx/fxml/nav_alumno.fxml"));
-        borderPane.setTop(view1);
     }
+
+    private void cargarVista(String ruta) throws IOException {
+        // Cargar una nueva vista y ponerla en el centro
+        AnchorPane nuevaVista = FXMLLoader.load(getClass().getResource(ruta));
+        borderPane.setCenter(nuevaVista);
+
+        if (borderPane.getScene() != null) {
+            stage = (Stage) borderPane.getScene().getWindow();
+            ajustarDimensionesVentana(nuevaVista);
+        } else {
+            System.out.println("La escena no está disponible aún.");
+        }
+
+
+    }
+
+
 
     @FXML
     private void btnCerrarSesion(ActionEvent event)throws IOException{
@@ -84,4 +92,15 @@ public class DashboardAlumnoController implements Initializable {
     }
 
 
+    private void ajustarDimensionesVentana(AnchorPane view) {
+        if (stage != null) {
+            double width = view.getPrefWidth();
+            double height = view.getPrefHeight();
+
+            stage.setWidth(width + 150);  // Agregar margen
+            stage.setHeight(height + 60);
+        } else {
+            System.out.println("El stage es nulo, no se puede ajustar el tamaño de la ventana.");
+        }
+    }
 }

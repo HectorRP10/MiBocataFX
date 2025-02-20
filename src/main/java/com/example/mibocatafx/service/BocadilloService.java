@@ -92,14 +92,10 @@ public class BocadilloService {
             boolean existePedidoParaBocadillo = pedidos.stream().anyMatch(pedido -> pedido.getBocadillo().getId() == bocadillo.getId());
 
             //Asignar el color al iniciar app
-            if (existePedidoParaBocadillo) {
-                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #FFDDC1;"); // Beige
-            } else {
-                if (bocadillo.getTipo().equals("frio")) {
-                    bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #89E9A8;"); // Verde
-                } else if (bocadillo.getTipo().equals("caliente")) {
-                    bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #F25F5F;"); // Rojo
-                }
+            if (bocadillo.getTipo().equals("Frio")) {
+                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #89E9A8;"); // Verde
+            } else if (bocadillo.getTipo().equals("Caliente")) {
+                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #F25F5F;"); // Rojo
             }
 
             bocadilloBox.setUserData(bocadillo);

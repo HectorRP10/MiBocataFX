@@ -4,37 +4,16 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController">
-
-    <top>
-        <ToolBar styleClass="toolbar" BorderPane.alignment="CENTER">
-            <items>
-                <ImageView fx:id="image_toolbar"   fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/logoMiBocata.png" />
-                    </image>
-                </ImageView>
-
-                <Region HBox.hgrow="ALWAYS" />
-
-                <HBox alignment="CENTER_RIGHT" spacing="20" styleClass="hbox-right">
-                    <Button fx:id="btnHome" onAction="#btnHome" styleClass="button" text="Home" />
-                    <Button fx:id="btnHistorial" onAction="#btnHistorialPedidos" styleClass="button" text="Historial" />
-                    <Button fx:id="btnCerrarSesion" onAction="#btnCerrarSesion" styleClass="button" text="Cerrar sesión" />
-                </HBox>
-            </items>
-        </ToolBar>
-    </top>
-
-    <center>
-        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <Region prefHeight="5.0" />
             <Label styleClass="label_dashboard_alumno" text="SELECCIONE BOCADILLO" />
-
             <Region prefHeight="90.0" />
-
-            <HBox fx:id="bocadilloContainer" styleClass="hbox-container" BorderPane.alignment="CENTER" />
+            <HBox fx:id="bocadilloContainer" styleClass="hbox-container" />
         </VBox>
-    </center>
+    </children>
+</AnchorPane>
 
-</BorderPane>
+
+

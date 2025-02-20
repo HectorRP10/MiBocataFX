@@ -232,4 +232,90 @@ public class PedidoDao {
 
 
 
+
+
+
+
+
+
+
+    public List<Pedido> obtenerPedidosPorUsuario(Alumno alumno) {
+        List<Pedido> pedidos = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Asegúrate de que la consulta esté utilizando el nombre correcto para el campo de relación
+            Query<Pedido> query = session.createQuery("FROM Pedido WHERE alumno = :alumno", Pedido.class);
+            query.setParameter("alumno", alumno);  // Pasa correctamente el parámetro 'alumno'
+            pedidos = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pedidos;
+    }
+
+
+
+
+
+
+    public List<Pedido> getPaginatedHistorial(int page, int offset) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Pedido p WHERE p.retirado IS NULL";  // Sin filtros adicionales
+            Query<Pedido> query = session.createQuery(hql, Pedido.class);
+
+            // Configurar paginación
+            query.setFirstResult((page - 1) * offset);  // Página actual
+            query.setMaxResults(offset);  // Número de resultados por página
+
+            return query.list();  // Devolver los pedidos correspondientes a la página
+        }
+    }
+
+
+
+
+
+    public long coutHistorial(HashMap<String, String> filtros) {
+
+        // Separando para añadir de forma dinámica los filtros
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            StringBuilder hql = new StringBuilder("SELECT COUNT(p) FROM Pedido p WHERE true");
+
+            // Agregar condiciones dinámicas basadas en el HashMap
+            if (filtros != null)
+                for (String key : filtros.keySet()) {
+                    if (key.equals("tipo"))
+                        hql.append(" AND p.tipo LIKE :").append(key);
+                    else
+                        hql.append(" AND p.").append(key).append(" LIKE :").append(key);
+                }
+
+            Query<Long> query = session.createQuery(hql.toString(), Long.class);
+
+
+
+            return query.getSingleResult();
+        }
+    }
+
+
+
+
+
+
+    public int obtenerTotalPedidosAlumno() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String consulta = "SELECT COUNT(p) FROM Pedido p WHERE p.retirado IS NULL";
+
+            Query<Long> query = session.createQuery(consulta, Long.class);
+            return ((Long) query.uniqueResult()).intValue();  // Devuelve el total de pedidos
+        }
+    }
+
+
+
+
+
+
+
+
 }

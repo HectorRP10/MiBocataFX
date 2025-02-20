@@ -34,6 +34,10 @@ public class PedidoService {
         return pedidoDao.obtenerPedidosPorFecha(fecha, paginaActual, pedidosPorPagina, tipoFiltro);
     }
 
+    public List<Pedido> obtenerPedidosPorUsuario(Alumno alumno) {
+        return pedidoDao.obtenerPedidosPorUsuario(alumno);
+    }
+
     public List<Pedido> getPaginated(int page, int offset, HashMap<String, String> filtros) {
         return pedidoDao.getPaginated(page, offset, filtros);
     }
@@ -41,6 +45,27 @@ public class PedidoService {
     public long cout(HashMap<String, String> filtros) {
         return pedidoDao.cout(filtros);
     }
+
+
+
+
+
+    public List<Pedido> getPaginated(int page, int offset) {
+        return pedidoDao.getPaginatedHistorial(page, offset);  // Llamada sin filtros
+    }
+
+
+    public long coutHistorial(HashMap<String, String> filtros) {
+        return pedidoDao.cout(filtros);
+    }
+
+
+
+
+
+
+
+
 
     /**
      *
@@ -108,11 +133,11 @@ public class PedidoService {
     /**
      * Método para restaurar el color del bocadillo según su tipo.
      */
-    private void restaurarColorBocadillo(HBox bocadilloBox, Bocadillo bocadillo) {
+    public void restaurarColorBocadillo(HBox bocadilloBox, Bocadillo bocadillo) {
         String estiloBase = "-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: ";
-        if (bocadillo.getTipo().equals("frio")) {
+        if (bocadillo.getTipo().equals("Frio")) {
             bocadilloBox.setStyle(estiloBase + "#89E9A8;"); // Verde
-        } else if (bocadillo.getTipo().equals("caliente")) {
+        } else if (bocadillo.getTipo().equals("Caliente")) {
             bocadilloBox.setStyle(estiloBase + "#F25F5F;"); // Rojo
         }
     }
@@ -120,6 +145,11 @@ public class PedidoService {
     public int obtenerTotalPedidos(Date fecha, Bocadillo.Tipo tipoFiltro) {
         return pedidoDao.obtenerTotalPedidos(fecha, tipoFiltro);
     }
+
+    public int obtenerTotalPedidosAlumno() {
+        return pedidoDao.obtenerTotalPedidosAlumno();
+    }
+
 
     public void actualizarPedido(Pedido pedido) {
         pedidoDao.actualizarPedido(pedido);

@@ -20,12 +20,13 @@
                 <HBox alignment="CENTER_RIGHT" spacing="20" styleClass="hbox-right">
                     <Button fx:id="btnHome" onAction="#btnHome" styleClass="button" text="Home" />
                     <Button fx:id="btnHistorial" onAction="#btnHistorialPedidos" styleClass="button" text="Historial" />
-                    <Button fx:id="btnCerrarSesion" styleClass="button" text="Cerrar sesión" />
+                    <Button fx:id="btnCerrarSesion" styleClass="button" onAction="#btnCerrarSesion" text="Cerrar sesión" />
                 </HBox>
             </items>
         </ToolBar>
     </top>
-
-
+    <center>
+        <AnchorPane fx:id="contentPane" />
+    </center>
 
 </BorderPane>

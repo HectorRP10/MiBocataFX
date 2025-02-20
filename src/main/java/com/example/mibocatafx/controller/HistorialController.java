@@ -1,10 +1,14 @@
 package com.example.mibocatafx.controller;
 
+import com.example.mibocatafx.UsuarioSesion;
+import com.example.mibocatafx.dao.PedidoDao;
 import com.example.mibocatafx.models.Pedido;
+import com.example.mibocatafx.models.Usuario;
 import com.example.mibocatafx.service.PedidoService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +25,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class HistorialController implements Initializable {
-
+    private int paginaActual = 1;
+    private int pedidosPorPagina = 8;
     @FXML
     private Label labelHistorial;
     @FXML
     private TextField txtNombre;
+    @FXML
+    private TableColumn<Pedido, String> columnaFecha;
+    @FXML
+    private TableColumn<Pedido, String> columnaNombre;
+    @FXML
+    private TableColumn<Pedido, Double> columnaPrecio;
     @FXML
     private TextField txtPrecio;
     @FXML
@@ -50,49 +61,27 @@ public class HistorialController implements Initializable {
 
     private HashMap<String, String> filtros = new HashMap<>();
     private long totalPedidos;
+    private PedidoService pedidoService;
 
-    @FXML
-    protected void mostrarPedidos() throws IOException {
 
-        PedidoService pedidoService = new PedidoService();
-        List<Pedido> pedidos = pedidoService.getPaginated(1, 50, null);
-        for(Pedido pedido : pedidos)
-        {
-            //imprimimos el objeto pivote
-            System.out.println(pedido.toString());
-        }
+    public HistorialController() {
+        this.pedidoService = new PedidoService();
     }
 
 
-
-
-    public void rellenaTabla(List<Pedido> pedidos){
+    public void rellenaTabla(List<Pedido> pedidos) {
         try {
+            // Llenar la tabla con la lista de pedidos
             tabla.setItems(FXCollections.observableArrayList(pedidos));
 
-            tabla_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-            tabla_nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-            tabla_precio.setCellValueFactory(new PropertyValueFactory<Pedido, String>("precio"));
-
-
-            /*
-            // Opción por si no va el getValue() del Object
-            tabla_especialidad.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Medico, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<Medico, String> cellData) {
-                    Medico medico = cellData.getValue(); // Obtener el objeto Medico
-                    return new SimpleStringProperty(
-                            (medico != null && medico.getEspecialidad() != null) ? medico.getEspecialidad().getNombre() : ""
-                    );
-                }
-            });
-
-            */
-
+            // Asignar las columnas con los métodos correspondientes de la clase Pedido
+            columnaFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+            columnaPrecio.setCellValueFactory(new PropertyValueFactory<Pedido, Double>("precio"));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 
 
@@ -104,17 +93,39 @@ public class HistorialController implements Initializable {
 
 
         // Rellena la tabla con la primera página sin filtros
-        PedidoService pedidoService = new PedidoService();
-        List<Pedido> pedidos = pedidoService.getPaginated(1, OFFSET, null);
-        rellenaTabla(pedidos);
-        totalPedidos = pedidoService.cout(null);
-        lblTotal.setText("Total registros: "+totalPedidos+" - Total páginas: "+Math.round(Math.ceil((float)totalPedidos/(float)OFFSET)));
+        columnaFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        //columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        columnaPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
+        // Configurar la columna de nombre con un Callback para obtener el nombre del bocadillo
+        columnaNombre.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pedido, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Pedido, String> param) {
+                return new SimpleStringProperty(param.getValue().getBocadillo().getNombre());
+            }
+        });
+
+
+
+        cargarPedidos();
 
 
     }
+    private void cargarPedidos() {
+        List<Pedido> pedidos = pedidoService.getPaginated(paginaActual, pedidosPorPagina, filtros); // Obtener pedidos con filtros aplicados
+        totalPedidos = pedidoService.cout(filtros); // Actualiza el total de pedidos
+        rellenaTabla(pedidos);
 
+        lblTotal.setText("Total registros: " + totalPedidos + " - Total páginas: " +
+                Math.round(Math.ceil((float) totalPedidos / (float) pedidosPorPagina)));
 
+        // Actualiza el número de la página en el campo de texto
+        txtPagina.setText(String.valueOf(paginaActual));
+
+        // Deshabilitar o habilitar los botones de paginación
+        btnSiguiente.setDisable(paginaActual >= (int) Math.ceil((float) totalPedidos / pedidosPorPagina));
+        btnAnterior.setDisable(paginaActual <= 1);
+    }
 
 
     @FXML
@@ -143,39 +154,19 @@ public class HistorialController implements Initializable {
 
 
     @FXML
-    public void siguientePagina(){
-        int page = Integer.parseInt(txtPagina.getText());
-        page++;
-
-        PedidoService pedidoService = new PedidoService();
-        List<Pedido> pedidos = pedidoService.getPaginated(page, OFFSET, filtros);
-        if (!pedidos.isEmpty()) {
-            rellenaTabla(pedidos);
-
-            txtPagina.setText(page + "");
-            btnAnterior.setDisable(false);
-        } else {
-            btnSiguiente.setDisable(true);
+    void anteriorPagina(ActionEvent event) {
+        if (paginaActual > 1) {
+            paginaActual--;
+            cargarPedidos();
         }
     }
 
     @FXML
-    public void anteriorPagina(){
-        int page = Integer.parseInt(txtPagina.getText());
-        page--;
-
-        if (page>0) {
-            PedidoService pedidoService = new PedidoService();
-            List<Pedido> pedidos = pedidoService.getPaginated(page, OFFSET, filtros);
-            if (!pedidos.isEmpty()) {
-                rellenaTabla(pedidos);
-                txtPagina.setText(page + "");
-                btnSiguiente.setDisable(false);
-            } else {
-                btnAnterior.setDisable(true);
-            }
-        } else {
-            btnAnterior.setDisable(true);
+    void siguientePagina(ActionEvent event) {
+        int totalPaginas = (int) Math.ceil((double) totalPedidos / pedidosPorPagina);
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            cargarPedidos();
         }
     }
 
