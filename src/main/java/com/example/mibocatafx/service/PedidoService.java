@@ -161,4 +161,22 @@ public class PedidoService {
         return pedidoDao.obtenerAlumno(usuario);
     }
 
+
+
+
+
+
+    public long obtenerPedidosFriosDeHoy() {
+        return pedidoDao.obtenerPedidosFriosDeHoy();
+    }
+    public long obtenerPedidosCalientesDeHoy() {
+        return pedidoDao.obtenerPedidosFriosDeHoy();
+    }
+
+
+
+
+
+
+
 }

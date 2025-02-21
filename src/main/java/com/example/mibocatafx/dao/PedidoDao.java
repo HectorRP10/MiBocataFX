@@ -318,4 +318,60 @@ public class PedidoDao {
 
 
 
+    public long obtenerPedidosFriosDeHoy() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Obtener la fecha de hoy sin hora
+            LocalDate hoyLocalDate = LocalDate.now();
+            Date hoy = Date.from(hoyLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            // Consulta para contar los pedidos fríos de hoy
+            String consulta = "SELECT COUNT(p) FROM Pedido p WHERE p.bocadillo.tipo = 'Frio' AND DATE(p.fecha) = :hoy";
+            Query<Long> query = session.createQuery(consulta, Long.class);
+            query.setParameter("hoy", hoy);
+
+            // Ejecutar la consulta
+            Long resultado = query.uniqueResult();
+
+            // Retornar el total de pedidos fríos de hoy
+            return (resultado != null) ? resultado : 0;
+        } catch (Exception e) {
+            e.printStackTrace(); // Capturar y mostrar errores
+            return 0;
+        }
+    }
+
+
+    public long obtenerPedidosCalientesDeHoy() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Obtener la fecha de hoy sin hora
+            LocalDate hoyLocalDate = LocalDate.now();
+            Date hoy = Date.from(hoyLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            // Consulta para contar los pedidos fríos de hoy
+            String consulta = "SELECT COUNT(p) FROM Pedido p WHERE p.bocadillo.tipo = 'Caliente' AND DATE(p.fecha) = :hoy";
+            Query<Long> query = session.createQuery(consulta, Long.class);
+            query.setParameter("hoy", hoy);
+
+            // Ejecutar la consulta
+            Long resultado = query.uniqueResult();
+
+            // Retornar el total de pedidos fríos de hoy
+            return (resultado != null) ? resultado : 0;
+        } catch (Exception e) {
+            e.printStackTrace(); // Capturar y mostrar errores
+            return 0;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

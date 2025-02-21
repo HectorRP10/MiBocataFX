@@ -1,32 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.PedidosCocinaController">
-   <children>
-      <TableView fx:id="tabla" layoutY="63.0" prefHeight="228.0" prefWidth="600.0">
-        <columns>
-          <TableColumn fx:id="tabla_id" prefWidth="75.0" text="Id" />
-          <TableColumn fx:id="tabla_nombreAlumno" prefWidth="75.0" text="Alumno" />
-            <TableColumn fx:id="tabla_bocadillo" prefWidth="75.0" text="Bocadillo" />
-            <TableColumn fx:id="precio" prefWidth="75.0" text="Precio" />
-            <TableColumn fx:id="tabla_descuento" prefWidth="75.0" text="Descuento" />
-            <TableColumn fx:id="fecha" prefWidth="75.0" text="Fecha" />
-            <TableColumn fx:id="retirado" prefWidth="75.0" text="Retirado" />
-            <TableColumn fx:id="tabla_retirar" prefWidth="75.0" text="Retirar" />
-        </columns>
-      </TableView>
-      <Button fx:id="btnAnterior" layoutX="227.0" layoutY="299.0" mnemonicParsing="false" onAction="#anteriorPagina" text="&lt;" />
-      <Button fx:id="btnSiguiente" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#siguientePagina" text="&gt;" />
-      <TextField fx:id="txtPagina" layoutX="252.0" layoutY="299.0" prefHeight="26.0" prefWidth="96.0" />
-      <ComboBox fx:id="tipoBocadillo" layoutX="22.0" layoutY="22.0" prefHeight="26.0" prefWidth="118.0" promptText="Tipo" />
-      <Button fx:id="filtrar" layoutX="166.0" layoutY="22.0" mnemonicParsing="false" onAction="#findBuscador" text="Filtrar" />
-      <Label fx:id="lblTotalPaginas" layoutX="286.0" layoutY="347.0" />
-   </children>
-</AnchorPane>
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="estilos.css" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.PedidosCocinaController">
+
+<top>
+    <ToolBar styleClass="toolbar" BorderPane.alignment="CENTER">
+        <items>
+            <ImageView fx:id="image_toolbar" fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../images/logoMiBocata.png" />
+                </image>
+            </ImageView>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <HBox alignment="CENTER_RIGHT" spacing="20" styleClass="hbox-right">
+                <Button fx:id="btnCerrarSesion" onAction="#btnCerrarSesion" styleClass="button" text="Cerrar sesión" />
+            </HBox>
+        </items>
+    </ToolBar>
+</top>
+<center>
+    <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+        <children>
+            <TableView fx:id="tabla" layoutX="50.0" layoutY="63.0" prefHeight="228.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="tabla_id" prefWidth="75.0" text="Id" />
+                    <TableColumn fx:id="tabla_nombreAlumno" prefWidth="75.0" text="Alumno" />
+                    <TableColumn fx:id="tabla_bocadillo" prefWidth="75.0" text="Bocadillo" />
+                    <TableColumn fx:id="precio" prefWidth="75.0" text="Precio" />
+                    <TableColumn fx:id="tabla_descuento" prefWidth="75.0" text="Descuento" />
+                    <TableColumn fx:id="fecha" prefWidth="75.0" text="Fecha" />
+                    <TableColumn fx:id="retirado" prefWidth="75.0" text="Retirado" />
+                    <TableColumn fx:id="tabla_retirar" prefWidth="75.0" text="Retirar" />
+                </columns>
+            </TableView>
+            <Button fx:id="btnAnterior" layoutX="227.0" layoutY="299.0" mnemonicParsing="false" onAction="#anteriorPagina" text="&lt;" />
+            <Button fx:id="btnSiguiente" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#siguientePagina" text="&gt;" />
+            <TextField fx:id="txtPagina" layoutX="252.0" layoutY="299.0" prefHeight="26.0" prefWidth="96.0" />
+            <ComboBox fx:id="tipoBocadillo" layoutX="22.0" layoutY="22.0" prefHeight="26.0" prefWidth="118.0" promptText="Tipo" />
+            <Button fx:id="filtrar" layoutX="166.0" layoutY="22.0" mnemonicParsing="false" onAction="#findBuscador" text="Filtrar" />
+            <Label fx:id="lblTotalPaginas" layoutX="286.0" layoutY="347.0" />
+
+        </children>
+
+    </AnchorPane>
+</center>
+
+    <right>
+        <VBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 5 50 5 5;" >
+            <HBox fx:id="bocadilloContainerFrios" styleClass=".hbox-containerTotalesFrio " />
+            <HBox fx:id="bocadilloContainerCalientes" styleClass=".hbox-containerTotalesCaliente " />
+
+        </VBox>
+    </right>
+
+</BorderPane>
