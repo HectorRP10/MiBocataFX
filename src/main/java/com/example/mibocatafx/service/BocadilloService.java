@@ -31,8 +31,8 @@ public class BocadilloService {
         return bocadilloDao.getAll();
     }
 
-    public List<Bocadillo> getPaginated() {
-        return bocadilloDao.getPaginated();
+    public List<Bocadillo> getPaginated(int paginaActual, int bocadilloPorPagina) {
+        return bocadilloDao.getPaginated(paginaActual, bocadilloPorPagina);
     }
 
     public List<Bocadillo> getByDiaSemana(String diaSemana) {
@@ -99,5 +99,16 @@ public class BocadilloService {
             // Agregar la tarjeta al contenedor principal
             bocadilloContainer.getChildren().addAll(bocadilloBox, new Separator());
         }
+    }
+
+    public void modificar(Bocadillo bocadillo) {
+        bocadilloDao.update(bocadillo);
+    }
+    public void eliminar(Bocadillo bocadillo) {
+        bocadilloDao.delete(bocadillo);
+    }
+
+    public int obtenerTotalBocadillos() {
+        return bocadilloDao.obtenerTotalBocadillos();
     }
 }

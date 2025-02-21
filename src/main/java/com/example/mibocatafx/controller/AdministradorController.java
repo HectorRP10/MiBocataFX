@@ -14,24 +14,6 @@ public class AdministradorController {
 
     @FXML
     private BorderPane borderPane;
-
-    @FXML
-    private Button alergenos;
-
-    @FXML
-    private Button bocadillos;
-
-    @FXML
-    private Button cursos;
-
-    @FXML
-    private Button descuentos;
-
-    @FXML
-    private Button usuarios;
-
-
-
     private Stage stage;
 
     @FXML

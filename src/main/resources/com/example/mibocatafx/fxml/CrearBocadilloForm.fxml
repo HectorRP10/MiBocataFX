@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="413.0" prefWidth="258.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutY="13.0" prefHeight="386.0" prefWidth="257.0">
+         <children>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="28.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Bocadillos" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Nombre" />
+                  <TextField fx:id="txtNombreBocadillo">
+                     <HBox.margin>
+                        <Insets left="35.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Precio" />
+                  <TextField fx:id="txtPrecioBocadillo">
+                     <HBox.margin>
+                        <Insets left="45.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Ingredientes" />
+                  <TextField fx:id="txtIngredientesBocadillo">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="143.0" prefHeight="96.0" prefWidth="184.0">
+               <children>
+                  <Label text="Tipo" />
+                  <ComboBox fx:id="txtTipoBocadillo" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="303.0" prefHeight="96.0" prefWidth="184.0">
+               <children>
+                  <Label text="Dia Asignado" />
+                  <ComboBox fx:id="txtDiaBocadillo" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="321.0" prefHeight="96.0" prefWidth="184.0">
+               <children>
+                  <Label text="Fecha de Baja" />
+                  <DatePicker fx:id="txtFechaBajaBocadillo" prefHeight="26.0" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </DatePicker>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="334.0" prefHeight="96.0" prefWidth="184.0">
+               <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Confirmar" textAlignment="CENTER" />
+                  <Button fx:id="btonCancelar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Cancelar" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+
+</AnchorPane>

@@ -32,8 +32,6 @@ public class PedidosCocinaController {
     @FXML
     private TableColumn<Pedido,String> fecha;
     @FXML
-    private TableColumn<Pedido,String> retirado;
-    @FXML
     private TableColumn<Pedido, Void> tabla_retirar;
     private ObservableList<Pedido> pedidosList;
     private Bocadillo.Tipo tipoFiltroActual = null;

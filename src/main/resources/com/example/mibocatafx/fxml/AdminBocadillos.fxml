@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.AdminBocadilloController">
    <children>
       <TableView fx:id="tablaBocadillos" layoutX="1.0" layoutY="78.0" prefHeight="200.0" prefWidth="777.0">
         <columns>
@@ -16,8 +16,8 @@
             <TableColumn fx:id="precioBocadillo" prefWidth="75.0" text="Precio" />
             <TableColumn fx:id="ingredientesBocadillo" prefWidth="75.0" text="Ingredientes" />
             <TableColumn fx:id="tipoBocadillo" prefWidth="75.0" text="Tipo" />
-            <TableColumn fx:id="dia" prefWidth="75.0" text="Dia Semana" />
-            <TableColumn prefWidth="75.0" text="Fecha Baja" />
+            <TableColumn fx:id="diaBocadillo" prefWidth="75.0" text="Dia Semana" />
+            <TableColumn fx:id="fechaBajaBocadillo" prefWidth="75.0" text="Fecha Baja" />
             <TableColumn fx:id="editarBocadillo" prefWidth="75.0" text="Editar" />
             <TableColumn fx:id="eliminarBocadillo" prefWidth="75.0" text="Eliminar" />
         </columns>
@@ -25,10 +25,10 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField fx:id="txtPaginas" layoutX="357.0" layoutY="298.0" prefHeight="26.0" prefWidth="62.0" />
-      <Button fx:id="anteriorPagina" layoutX="332.0" layoutY="298.0" mnemonicParsing="false" text="&lt;" />
-      <Button fx:id="siguientePagina" layoutX="419.0" layoutY="298.0" mnemonicParsing="false" text="&gt;" />
-      <Button fx:id="crearBocadillos" layoutX="25.0" layoutY="31.0" mnemonicParsing="false" text="Crear nuevo bocadillo" textAlignment="CENTER" />
+      <TextField fx:id="txtPagina" layoutX="357.0" layoutY="298.0" prefHeight="26.0" prefWidth="62.0" />
+      <Button fx:id="anteriorPagina" layoutX="332.0" layoutY="298.0" mnemonicParsing="false" text="&lt;" onAction="#paginaAnterior" />
+      <Button fx:id="siguientePagina" layoutX="419.0" layoutY="298.0" mnemonicParsing="false" text="&gt;" onAction="#paginaSiguiente" />
+      <Button fx:id="crearBocadillos" layoutX="25.0" layoutY="31.0" mnemonicParsing="false" text="Crear nuevo bocadillo" textAlignment="CENTER" onAction="#crearNuevoBocadillo" />
       <Label fx:id="totalPaginas" layoutX="376.0" layoutY="340.0" />
    </children>
 </AnchorPane>
