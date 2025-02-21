@@ -1,4 +1,5 @@
 package com.example.mibocatafx.controller;
+
 import com.example.mibocatafx.MainApplication;
 import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.dao.UsuarioDao;
@@ -33,18 +34,24 @@ public class LoginController {
         UsuarioDao usuarioDao = new UsuarioDao();
         Usuario usuario = usuarioDao.validar_login(email, password);
 
-        if (usuario != null ) {
+        if (usuario != null) {
             UsuarioSesion.iniciarSesion(usuario); // Se guarda el usuario en sesión
 
             FXMLLoader fxmlLoader = null;
             String title = "";
 
             if (usuario.getTipo() == Usuario.Tipo.Alumno) {
+
                 fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/nav_alumno.fxml"));
                 title = "Alumno";
             } else if (usuario.getTipo() == Usuario.Tipo.Cocina) {
                 fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/com/example/mibocatafx/fxml/PedidosCocina.fxml"));
                 title = "Cocina";
+
+            } else if (usuario.getTipo() == Usuario.Tipo.Admin) {
+                fxmlLoader  = new FXMLLoader(MainApplication.class.getResource("/com/example/mibocatafx/fxml/Administrador.fxml"));
+                title = "Admin";
+
             }
 
             if (fxmlLoader != null) {
