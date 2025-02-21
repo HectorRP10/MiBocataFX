@@ -30,7 +30,9 @@ public class Bocadillo {
         M,
         X,
         J,
-        V
+        V,
+        S,
+        D
     }
 
     @Enumerated(EnumType.STRING)

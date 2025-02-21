@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.HistorialController">
 
-    <!-- VBox ajustable que ocupa todo el espacio -->
-    <VBox spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" alignment="TOP_CENTER">
-        <Label text="Esto es el historial" styleClass="label_dashboard_alumno"/>
+    <children>
 
-        <!-- Espacio dinámico entre los componentes -->
-        <Region prefHeight="90.0" />
-    </VBox>
+        <!-- Tabla para mostrar los pedidos -->
+        <TableView fx:id="tabla" layoutY="63.0" prefHeight="228.0" prefWidth="600.0" AnchorPane.topAnchor="50.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+            <columns>
+                <TableColumn fx:id="columnaFecha" prefWidth="75.0" text="Fecha" />
+                <TableColumn fx:id="columnaNombre" prefWidth="75.0" text="Bocadillo" />
+                <TableColumn fx:id="columnaPrecio" prefWidth="75.0" text="Precio" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
 
+        <!-- Botón para la paginación anterior -->
+        <Button fx:id="btnAnterior" layoutX="227.0" layoutY="299.0" mnemonicParsing="false" onAction="#anteriorPagina" text="&lt;" />
+
+        <!-- Botón para la paginación siguiente -->
+        <Button fx:id="btnSiguiente" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#siguientePagina" text="&gt;" />
+
+        <!-- Campo de texto para mostrar la página actual -->
+        <TextField fx:id="txtPagina" layoutX="252.0" layoutY="299.0" prefHeight="26.0" prefWidth="96.0" />
+
+        <!-- Campo de texto para filtrar por fecha -->
+        <TextField fx:id="txtFecha" layoutX="22.0" layoutY="22.0" prefHeight="26.0" prefWidth="118.0" promptText="Fecha" />
+
+        <!-- Botón para ejecutar el filtro -->
+        <Button fx:id="filtrar" layoutX="166.0" layoutY="22.0" mnemonicParsing="false" text="Filtrar" />
+
+        <!-- Etiqueta para mostrar el total de páginas -->
+        <Label fx:id="lblTotal" layoutX="286.0" layoutY="347.0" />
+    </children>
 </AnchorPane>

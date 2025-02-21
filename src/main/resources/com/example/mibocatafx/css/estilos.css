@@ -60,3 +60,20 @@
     -fx-pref-Width:73.0;
 
 }
+
+
+.hbox-containerTotalesFrio {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-spacing:10.0;
+    -fx-alignment: top_center;
+     -fx-background-color: #89E9A8;
+}
+
+.hbox-containerTotalesCaliente {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-spacing:10.0;
+    -fx-alignment: top_center;
+     -fx-background-color: #F25F5F;
+}

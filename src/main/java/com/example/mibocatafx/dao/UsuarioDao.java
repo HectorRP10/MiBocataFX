@@ -6,7 +6,6 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class UsuarioDao {
@@ -42,11 +41,9 @@ public class UsuarioDao {
     }
 
 
-
     public Usuario validar_login(String email, String password) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            TypedQuery<Usuario> query = session.createQuery(
-                    "FROM Usuario WHERE correo = :email AND contrasenya = :password", Usuario.class);
+            TypedQuery<Usuario> query = session.createQuery("FROM Usuario WHERE correo = :email AND contrasenya = :password", Usuario.class);
             query.setParameter("email", email);
             query.setParameter("password", password);
 

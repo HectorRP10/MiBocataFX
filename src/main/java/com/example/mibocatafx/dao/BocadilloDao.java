@@ -70,7 +70,7 @@ public class BocadilloDao {
         }
     }
 
-    public List<Bocadillo> getByDiaSemana(String diaSemana) {
+    public List<Bocadillo> getBocadilloDia(String diaSemana) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Bocadillo.DiaSemana diaSemanaEnum;
             try {

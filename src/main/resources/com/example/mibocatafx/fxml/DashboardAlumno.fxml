@@ -1,40 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/estilos.css"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController" fx:id="borderPane">
 
-    <top>
-        <ToolBar BorderPane.alignment="CENTER" styleClass="toolbar">
-            <items>
-                <ImageView fx:id="image_toolbar" fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/logoMiBocata.png" />
-                    </image>
-                </ImageView>
-
-                <Region HBox.hgrow="ALWAYS" />
-
-                <HBox alignment="CENTER_RIGHT" spacing="20" styleClass="hbox-right">
-                    <Button fx:id="btnHistorial" text="Historial" styleClass="button" onAction="#btnHistorialPedidos"/>
-                    <Button fx:id="btnCerrarSesion"  text="Cerrar sesión" styleClass="button"/>
-                </HBox>
-            </items>
-        </ToolBar>
-    </top>
-
-    <center>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" alignment="TOP_CENTER" spacing="20.0" >
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <Region prefHeight="5.0" />
-            <Label text="SELECCIONE BOCADILLO" styleClass="label_dashboard_alumno"/>
-
+            <Label styleClass="label_dashboard_alumno" text="SELECCIONE BOCADILLO" />
             <Region prefHeight="90.0" />
-
-            <HBox fx:id="bocadilloContainer" BorderPane.alignment="CENTER" styleClass="hbox-container"/>
+            <HBox fx:id="bocadilloContainer" styleClass="hbox-container" />
         </VBox>
-    </center>
+    </children>
+</AnchorPane>
 
-</BorderPane>
+
+

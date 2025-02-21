@@ -1,5 +1,7 @@
 package com.example.mibocatafx.controller;
 
+import com.example.mibocatafx.MainApplication;
+import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.models.Pedido;
 import com.example.mibocatafx.service.PedidoService;
@@ -8,9 +10,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +43,10 @@ public class PedidosCocinaController {
     private TableColumn<Pedido, Void> tabla_retirar;
     private ObservableList<Pedido> pedidosList;
     private Bocadillo.Tipo tipoFiltroActual = null;
-
+    @FXML
+    private HBox bocadilloContainerFrios;
+    @FXML
+    private HBox bocadilloContainerCalientes;
     private int paginaActual = 1;
     private int pedidosPorPagina = 5;
 
@@ -53,6 +64,8 @@ public class PedidosCocinaController {
     private TextField txtPagina;
     @FXML
     private Label lblTotalPaginas;
+    @FXML
+    private Label lblTotalPedidos;
 
     public PedidosCocinaController() {
         this.pedidoService = new PedidoService();
@@ -99,6 +112,8 @@ public class PedidosCocinaController {
 
         // Cargar los datos
         cargarDatos();
+        mostrarPedidosFrios();
+        mostrarPedidosCalientes();
     }
 
     @FXML
@@ -167,4 +182,62 @@ public class PedidosCocinaController {
             cargarDatos();
         }
     }
+
+    @FXML
+    private void btnCerrarSesion(ActionEvent event)throws IOException {
+        UsuarioSesion.cerrarSesion();
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("fxml/login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+        Stage stage = new Stage();
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
+
+        // Cerrar la ventana de login
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        currentStage.close();
+    }
+
+    public void mostrarPedidosFrios() {
+        // Obtener el total de pedidos calientes de hoy
+        long totalPedidosFrios = pedidoService.obtenerPedidosFriosDeHoy();
+
+        // Limpiar el contenedor antes de agregar el nuevo elemento
+        bocadilloContainerFrios.getChildren().clear();
+
+        // Crear una etiqueta con el total de pedidos calientes
+        Label labelTotalPedidos = new Label("Total pedidos frios: " + totalPedidosFrios);
+        labelTotalPedidos.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; ");
+
+        // Crear un HBox para encerrar la etiqueta y darle fondo
+        HBox contenedorPedidosFrios = new HBox(labelTotalPedidos);
+        contenedorPedidosFrios.setStyle("-fx-background-color: #89E9A8; " + "-fx-padding: 15px; " + "-fx-border-radius: 10px; " + "-fx-background-radius: 10px; " + "-fx-alignment: center;");
+
+
+                // Agregar el contenedor al VBox principal
+        bocadilloContainerFrios.getChildren().add(contenedorPedidosFrios);
+    }
+
+
+    public void mostrarPedidosCalientes() {
+        // Obtener el total de pedidos calientes de hoy
+        long totalPedidosCalientes = pedidoService.obtenerPedidosCalientesDeHoy();
+
+        // Limpiar el contenedor antes de agregar el nuevo elemento
+        bocadilloContainerCalientes.getChildren().clear();
+
+        //etiqueta con el total de pedidos calientes
+        Label labelTotalPedidos = new Label("Total pedidos calientes: " + totalPedidosCalientes);
+        labelTotalPedidos.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+        // HBox para encerrar la etiqueta y darle fondo
+        HBox contenedorPedidos = new HBox(labelTotalPedidos);
+        contenedorPedidos.setStyle("-fx-background-color: #F25F5F; " + "-fx-padding: 15px; " + "-fx-border-radius: 10px; " + "-fx-background-radius: 10px; " + "-fx-alignment: center;"
+        );
+
+        // Agregar el contenedor al VBox principal
+        bocadilloContainerCalientes.getChildren().add(contenedorPedidos);
+    }
+
 }

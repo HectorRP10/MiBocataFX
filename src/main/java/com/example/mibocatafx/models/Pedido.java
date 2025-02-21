@@ -30,6 +30,7 @@ public class Pedido {
 
     }
 
+
     public Pedido(Alumno alumno, Bocadillo bocadillo, Descuento id_descuento, double precio, Date fecha, Date retirado) {
         this.alumno = alumno;
         this.bocadillo = bocadillo;
