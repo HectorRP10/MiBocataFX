@@ -62,6 +62,12 @@ public class LoginController {
                 stage.setMaximized(true);  // Maximizar la ventana
                 stage.show();
 
+                //Si es alumno cargo el center al iniciar
+                if (usuario.getTipo() == Usuario.Tipo.Alumno) {
+                    DashboardAlumnoController controller = fxmlLoader.getController();
+                    controller.cargarCenter();
+                }
+
                 // Cerrar la ventana de login
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 currentStage.close();

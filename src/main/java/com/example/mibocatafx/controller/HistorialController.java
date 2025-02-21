@@ -112,14 +112,18 @@ public class HistorialController implements Initializable {
 
     }
     private void cargarPedidos() {
-        List<Pedido> pedidos = pedidoService.getPaginated(paginaActual, pedidosPorPagina, filtros); // Obtener pedidos con filtros aplicados
-        totalPedidos = pedidoService.cout(filtros); // Actualiza el total de pedidos
+        // Obtener los pedidos del alumno logueado
+        List<Pedido> pedidos = pedidoService.getPaginatedHistorial(paginaActual, pedidosPorPagina);
+        totalPedidos = pedidoService.obtenerTotalPedidosAlumno();  // Obtener el total de pedidos del alumno
+
+        // Rellenar la tabla con los pedidos
         rellenaTabla(pedidos);
 
+        // Actualizar la interfaz de usuario
         lblTotal.setText("Total registros: " + totalPedidos + " - Total páginas: " +
                 Math.round(Math.ceil((float) totalPedidos / (float) pedidosPorPagina)));
 
-        // Actualiza el número de la página en el campo de texto
+        // Actualizar el número de la página en el campo de texto
         txtPagina.setText(String.valueOf(paginaActual));
 
         // Deshabilitar o habilitar los botones de paginación

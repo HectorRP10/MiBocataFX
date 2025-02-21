@@ -49,11 +49,9 @@ public class PedidoDao {
     }
 
     public List<Pedido> getPaginated(int page, int offset, HashMap<String, String> filtros) {
-        // Separando para añadir de forma dinámica los filtros
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             StringBuilder hql = new StringBuilder("FROM Pedido p WHERE true");
 
-            // Agregar condiciones dinámicas basadas en el HashMap
             if (filtros != null)
                 for (String key : filtros.keySet()) {
                     if (key.equals("tipo"))
@@ -78,16 +76,10 @@ public class PedidoDao {
         }
     }
 
-
-
-
     public long cout(HashMap<String, String> filtros) {
-
-        // Separando para añadir de forma dinámica los filtros
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             StringBuilder hql = new StringBuilder("SELECT COUNT(p) FROM Pedido p WHERE true");
 
-            // Agregar condiciones dinámicas basadas en el HashMap
             if (filtros != null)
                 for (String key : filtros.keySet()) {
                     if (key.equals("tipo"))
@@ -107,13 +99,6 @@ public class PedidoDao {
             return query.getSingleResult();
         }
     }
-
-
-
-
-
-
-
 
     public List<Pedido> getPedidoAlumno(Alumno idAlumno, Date fecha) {
         LocalDate fechaSinHora = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -136,30 +121,6 @@ public class PedidoDao {
                 transaction.rollback();
 
             }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-    public void update (Pedido pedido){
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.update(pedido);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
         }
     }
 
@@ -230,92 +191,66 @@ public class PedidoDao {
         return alumno;
     }
 
-
-
-
-
-
-
-
-
-
-    public List<Pedido> obtenerPedidosPorUsuario(Alumno alumno) {
-        List<Pedido> pedidos = null;
+    /*
+    *
+    * Método para la páginación del historial
+     */
+    public List<Pedido> getPaginatedHistorial(int page, int offset, Alumno alumno) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Asegúrate de que la consulta esté utilizando el nombre correcto para el campo de relación
-            Query<Pedido> query = session.createQuery("FROM Pedido WHERE alumno = :alumno", Pedido.class);
-            query.setParameter("alumno", alumno);  // Pasa correctamente el parámetro 'alumno'
-            pedidos = query.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return pedidos;
-    }
-
-
-
-
-
-
-    public List<Pedido> getPaginatedHistorial(int page, int offset) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Pedido p WHERE p.retirado IS NULL";  // Sin filtros adicionales
-            Query<Pedido> query = session.createQuery(hql, Pedido.class);
-
-            // Configurar paginación
-            query.setFirstResult((page - 1) * offset);  // Página actual
-            query.setMaxResults(offset);  // Número de resultados por página
+            String hql = "FROM Pedido p WHERE p.retirado IS NULL AND p.alumno = :alumno";  // Filtro por alumno
+            Query<Pedido> query = session.createQuery(hql, Pedido.class)
+                    .setParameter("alumno", alumno)  // Pasar el alumno como parámetro
+                    .setFirstResult((page - 1) * offset)  // Página actual
+                    .setMaxResults(offset);  // Número de resultados por página
 
             return query.list();  // Devolver los pedidos correspondientes a la página
         }
     }
 
-
-
-
-
-    public long coutHistorial(HashMap<String, String> filtros) {
-
-        // Separando para añadir de forma dinámica los filtros
+    /*
+     *
+     * Método para la páginación del historial
+     */
+    public long coutHistorial(HashMap<String, String> filtros, Alumno alumno) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            StringBuilder hql = new StringBuilder("SELECT COUNT(p) FROM Pedido p WHERE true");
+            StringBuilder hql = new StringBuilder("SELECT COUNT(p) FROM Pedido p WHERE p.alumno = :alumno");
 
-            // Agregar condiciones dinámicas basadas en el HashMap
-            if (filtros != null)
+            if (filtros != null) {
                 for (String key : filtros.keySet()) {
-                    if (key.equals("tipo"))
-                        hql.append(" AND p.tipo LIKE :").append(key);
-                    else
+                    if (key.equals("tipo")) {
+                        hql.append(" AND p.bocadillo.tipo LIKE :").append(key);
+                    } else {
                         hql.append(" AND p.").append(key).append(" LIKE :").append(key);
+                    }
                 }
+            }
 
-            Query<Long> query = session.createQuery(hql.toString(), Long.class);
+            Query<Long> query = session.createQuery(hql.toString(), Long.class).setParameter("alumno", alumno);  // Pasar el alumno como parámetro
 
-
+            // Asignar valores a los parámetros de la consulta
+            if (filtros != null) {
+                for (HashMap.Entry<String, String> filtro : filtros.entrySet()) {
+                    query.setParameter(filtro.getKey(), "%" + filtro.getValue() + "%");
+                }
+            }
 
             return query.getSingleResult();
         }
     }
 
-
-
-
-
-
-    public int obtenerTotalPedidosAlumno() {
+    /*
+     *
+     * Método para obtener el total de pedidos del alumno logueado
+     */
+    public int obtenerTotalPedidosAlumno(Alumno alumno) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String consulta = "SELECT COUNT(p) FROM Pedido p WHERE p.retirado IS NULL";
+            String consulta = "SELECT COUNT(p) FROM Pedido p WHERE p.retirado IS NULL AND p.alumno = :alumno";
+            Query<Long> query = session.createQuery(consulta, Long.class)
+                    .setParameter("alumno", alumno);  // Pasar el alumno como parámetro
 
-            Query<Long> query = session.createQuery(consulta, Long.class);
-            return ((Long) query.uniqueResult()).intValue();  // Devuelve el total de pedidos
+            return ((Long) query.uniqueResult()).intValue();  // Devuelve el total de pedidos del alumno logueado
         }
     }
-
-
-
-
-
-
 
 
     public long obtenerPedidosFriosDeHoy() {
@@ -329,13 +264,12 @@ public class PedidoDao {
             Query<Long> query = session.createQuery(consulta, Long.class);
             query.setParameter("hoy", hoy);
 
-            // Ejecutar la consulta
             Long resultado = query.uniqueResult();
 
             // Retornar el total de pedidos fríos de hoy
             return (resultado != null) ? resultado : 0;
         } catch (Exception e) {
-            e.printStackTrace(); // Capturar y mostrar errores
+            e.printStackTrace();
             return 0;
         }
     }
@@ -352,26 +286,14 @@ public class PedidoDao {
             Query<Long> query = session.createQuery(consulta, Long.class);
             query.setParameter("hoy", hoy);
 
-            // Ejecutar la consulta
             Long resultado = query.uniqueResult();
 
             // Retornar el total de pedidos fríos de hoy
             return (resultado != null) ? resultado : 0;
         } catch (Exception e) {
-            e.printStackTrace(); // Capturar y mostrar errores
+            e.printStackTrace();
             return 0;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

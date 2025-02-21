@@ -34,9 +34,6 @@ public class PedidoService {
         return pedidoDao.obtenerPedidosPorFecha(fecha, paginaActual, pedidosPorPagina, tipoFiltro);
     }
 
-    public List<Pedido> obtenerPedidosPorUsuario(Alumno alumno) {
-        return pedidoDao.obtenerPedidosPorUsuario(alumno);
-    }
 
     public List<Pedido> getPaginated(int page, int offset, HashMap<String, String> filtros) {
         return pedidoDao.getPaginated(page, offset, filtros);
@@ -50,22 +47,17 @@ public class PedidoService {
 
 
 
-    public List<Pedido> getPaginated(int page, int offset) {
-        return pedidoDao.getPaginatedHistorial(page, offset);  // Llamada sin filtros
+    public List<Pedido> getPaginatedHistorial(int page, int offset) {
+        Alumno alumno = obtenerAlumno(UsuarioSesion.obtenerUsuarioActual());  // Obtener el alumno logueado
+        return pedidoDao.getPaginatedHistorial(page, offset, alumno);
     }
+
 
 
     public long coutHistorial(HashMap<String, String> filtros) {
-        return pedidoDao.cout(filtros);
+        Alumno alumno = obtenerAlumno(UsuarioSesion.obtenerUsuarioActual());  // Obtener el alumno logueado
+        return pedidoDao.coutHistorial(filtros, alumno);
     }
-
-
-
-
-
-
-
-
 
     /**
      *
@@ -147,7 +139,8 @@ public class PedidoService {
     }
 
     public int obtenerTotalPedidosAlumno() {
-        return pedidoDao.obtenerTotalPedidosAlumno();
+        Alumno alumno = obtenerAlumno(UsuarioSesion.obtenerUsuarioActual());  // Obtener el alumno logueado
+        return pedidoDao.obtenerTotalPedidosAlumno(alumno);
     }
 
 
@@ -161,22 +154,11 @@ public class PedidoService {
         return pedidoDao.obtenerAlumno(usuario);
     }
 
-
-
-
-
-
     public long obtenerPedidosFriosDeHoy() {
         return pedidoDao.obtenerPedidosFriosDeHoy();
     }
     public long obtenerPedidosCalientesDeHoy() {
-        return pedidoDao.obtenerPedidosFriosDeHoy();
+        return pedidoDao.obtenerPedidosCalientesDeHoy();
     }
-
-
-
-
-
-
 
 }

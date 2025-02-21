@@ -43,7 +43,20 @@ public class DashboardAlumnoController implements Initializable {
         } else {
             System.out.println("bocadilloContainer es null");
         }
+    }
 
+    /*
+    *
+    * Método para cargar el center directamente cuando inicio sesion
+     */
+    public  void cargarCenter() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/mibocatafx/fxml/DashboardAlumno.fxml"));
+            AnchorPane centerContent = loader.load();
+            borderPane.setCenter(centerContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -66,13 +79,13 @@ public class DashboardAlumnoController implements Initializable {
         if (borderPane.getScene() != null) {
             stage = (Stage) borderPane.getScene().getWindow();
             ajustarDimensionesVentana(nuevaVista);
+
+            // Forzar que la ventana se mantenga maximizada
+            stage.setMaximized(true);
         } else {
             System.out.println("La escena no está disponible aún.");
         }
-
-
     }
-
 
 
     @FXML
@@ -94,11 +107,14 @@ public class DashboardAlumnoController implements Initializable {
 
     private void ajustarDimensionesVentana(AnchorPane view) {
         if (stage != null) {
-            double width = view.getPrefWidth();
-            double height = view.getPrefHeight();
+            // Verificar si la ventana está maximizada
+            if (!stage.isMaximized()) {
+                double width = view.getPrefWidth();
+                double height = view.getPrefHeight();
 
-            stage.setWidth(width + 150);  // Agregar margen
-            stage.setHeight(height + 60);
+                stage.setWidth(width + 150);  // Agregar margen
+                stage.setHeight(height + 60);
+            }
         } else {
             System.out.println("El stage es nulo, no se puede ajustar el tamaño de la ventana.");
         }
