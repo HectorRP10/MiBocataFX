@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.PedidosCocinaController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.PedidosCocinaController">
 
     <top>
         <ToolBar styleClass="toolbar" BorderPane.alignment="CENTER">
@@ -30,7 +38,9 @@
         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;">
             <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 10 0;">
                 <ComboBox fx:id="tipoBocadillo" prefHeight="26.0" prefWidth="150.0" promptText="Tipo de bocadillo" />
+            <ComboBox fx:id="cursosBox" layoutX="10.0" layoutY="11.0" prefHeight="26.0" prefWidth="150.0" promptText="Cursos" />
                 <Button fx:id="filtrar" mnemonicParsing="false" onAction="#findBuscador" text="Filtrar" />
+            <Button fx:id="borrarFiltros" layoutX="332.0" layoutY="10.0" mnemonicParsing="false" onAction="#findBuscador" text="Borrar Filtros" />
             </HBox>
 
             <TableView fx:id="tabla" prefHeight="228.0" prefWidth="600.0" style="-fx-cell-size: 30px;">

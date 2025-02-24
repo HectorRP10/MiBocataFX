@@ -1,9 +1,6 @@
 package com.example.mibocatafx.dao;
 
-import com.example.mibocatafx.models.Alumno;
-import com.example.mibocatafx.models.Bocadillo;
-import com.example.mibocatafx.models.Pedido;
-import com.example.mibocatafx.models.Usuario;
+import com.example.mibocatafx.models.*;
 import com.example.mibocatafx.util.HibernateUtil;
 import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;
@@ -22,11 +19,14 @@ import java.util.List;
 
 public class PedidoDao {
 
-    public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro) {
+    public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro, Curso cursoSeleccionado) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String consulta = "FROM Pedido p WHERE p.fecha >= :fecha AND p.retirado IS NULL";
+            String consulta = "FROM Pedido p WHERE p.fecha >= :fecha ";
             if (tipoFiltro != null) {
                 consulta += " AND p.bocadillo.tipo = :tipoBocadillo";
+            }
+            if (cursoSeleccionado != null) {
+                consulta += " AND p.alumno.id_curso = :cursoSeleccionado";
             }
             var query = session.createQuery(consulta, Pedido.class)
                     .setParameter("fecha", fecha)
@@ -37,7 +37,9 @@ public class PedidoDao {
             if (tipoFiltro != null) {
                 query.setParameter("tipoBocadillo", tipoFiltro);
             }
-
+            if (cursoSeleccionado != null) {
+                query.setParameter("cursoSeleccionado", cursoSeleccionado);
+            }
             return query.list();
         }
     }

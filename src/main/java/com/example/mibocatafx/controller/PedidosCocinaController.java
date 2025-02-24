@@ -3,11 +3,14 @@ package com.example.mibocatafx.controller;
 import com.example.mibocatafx.MainApplication;
 import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.models.Bocadillo;
+import com.example.mibocatafx.models.Curso;
 import com.example.mibocatafx.models.Pedido;
+import com.example.mibocatafx.service.CursoService;
 import com.example.mibocatafx.service.PedidoService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -43,6 +47,7 @@ public class PedidosCocinaController {
     private TableColumn<Pedido, Void> tabla_retirar;
     private ObservableList<Pedido> pedidosList;
     private Bocadillo.Tipo tipoFiltroActual = null;
+    Curso cursoSeleccionado = null;
     @FXML
     private HBox bocadilloContainerFrios;
     @FXML
@@ -51,6 +56,7 @@ public class PedidosCocinaController {
     private int pedidosPorPagina = 5;
 
     private PedidoService pedidoService;
+    private CursoService cursoService;
 
     @FXML
     private Button btnAnterior;
@@ -61,6 +67,8 @@ public class PedidosCocinaController {
     @FXML
     private ComboBox<Bocadillo.Tipo> tipoBocadillo;
     @FXML
+    private ComboBox<Curso> cursosBox;
+    @FXML
     private TextField txtPagina;
     @FXML
     private Label lblTotalPaginas;
@@ -69,6 +77,7 @@ public class PedidosCocinaController {
 
     public PedidosCocinaController() {
         this.pedidoService = new PedidoService();
+        this.cursoService=new CursoService();
     }
 
     @FXML
@@ -109,6 +118,7 @@ public class PedidosCocinaController {
 
         // Configurar el ComboBox
         cargarTiposDeBocadillos();
+        cargarCursos();
 
         // Cargar los datos
         cargarDatos();
@@ -137,12 +147,13 @@ public class PedidosCocinaController {
     @FXML
     void findBuscador(ActionEvent event) {
         tipoFiltroActual = tipoBocadillo.getValue();
+        cursoSeleccionado = cursosBox.getValue();
         cargarDatos();
     }
 
     private void cargarDatos() {
         Date fechaHoy = obtenerFechaHoy();
-        List<Pedido> pedidos = pedidoService.obtenerPedidosPorFecha(fechaHoy, paginaActual, pedidosPorPagina, tipoFiltroActual);
+        List<Pedido> pedidos = pedidoService.obtenerPedidosPorFecha(fechaHoy, paginaActual, pedidosPorPagina, tipoFiltroActual, cursoSeleccionado );
         pedidosList.clear();
         pedidosList.addAll(pedidos);
         actualizarTotalPaginas();
@@ -161,6 +172,22 @@ public class PedidosCocinaController {
 
     private void cargarTiposDeBocadillos() {
         tipoBocadillo.setItems(FXCollections.observableArrayList(Bocadillo.Tipo.values()));
+    }
+
+    private void cargarCursos() {
+        CursoService cursoService = new CursoService(); // Asume que tienes un servicio para obtener los cursos
+        List<Curso> cursos = cursoService.getAll();
+        cursosBox.setItems(FXCollections.observableArrayList(cursos));
+        cursosBox.setConverter(new StringConverter<Curso>(){
+            @Override
+            public String toString(Curso curso) {
+                return (curso != null) ? curso.getNombre() : "";
+            }
+            @Override
+            public Curso fromString(String string) {
+                return null;
+            }
+        });
     }
 
     private void actualizarTotalPaginas() {

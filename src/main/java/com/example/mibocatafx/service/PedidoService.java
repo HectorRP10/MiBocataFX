@@ -2,10 +2,7 @@ package com.example.mibocatafx.service;
 
 import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.dao.PedidoDao;
-import com.example.mibocatafx.models.Alumno;
-import com.example.mibocatafx.models.Bocadillo;
-import com.example.mibocatafx.models.Pedido;
-import com.example.mibocatafx.models.Usuario;
+import com.example.mibocatafx.models.*;
 import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -28,8 +25,8 @@ public class PedidoService {
         this.pedidoDao = new PedidoDao();
     }
 
-    public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro) {
-        return pedidoDao.obtenerPedidosPorFecha(fecha, paginaActual, pedidosPorPagina, tipoFiltro);
+    public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro, Curso cursoSeleccionado) {
+        return pedidoDao.obtenerPedidosPorFecha(fecha, paginaActual, pedidosPorPagina, tipoFiltro, cursoSeleccionado);
     }
 
 
