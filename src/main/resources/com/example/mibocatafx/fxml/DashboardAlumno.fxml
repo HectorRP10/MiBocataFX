@@ -4,13 +4,14 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"  stylesheets="@../css/estilos.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mibocatafx.controller.DashboardAlumnoController">
     <children>
         <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <Region prefHeight="5.0" />
             <Label styleClass="label_dashboard_alumno" text="SELECCIONE BOCADILLO" />
             <Region prefHeight="90.0" />
             <HBox fx:id="bocadilloContainer" styleClass="hbox-container" />
+            <Label fx:id="mensajePedido" text="Pedido reservado en el día de hoy" styleClass="mensaje-pedido"/>
         </VBox>
     </children>
 </AnchorPane>

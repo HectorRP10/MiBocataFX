@@ -1,9 +1,7 @@
 package com.example.mibocatafx.service;
 
-import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.dao.BocadilloDao;
 import com.example.mibocatafx.models.Bocadillo;
-import com.example.mibocatafx.models.Pedido;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
@@ -13,8 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -78,31 +74,37 @@ public class BocadilloService {
         // Lista para almacenar todos los bocadillos en pantalla
         List<HBox> listaBocadillos = new ArrayList<>();
 
-        // Obtener la fecha actual
-        LocalDate fechaActual = LocalDate.now();
-        Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        // Buscar los pedidos del alumno
-        List<Pedido> pedidos = pedidoService.getPedidoAlumno(pedidoService.obtenerAlumno(UsuarioSesion.obtenerUsuarioActual()), fecha);
-
         for (Bocadillo bocadillo : bocadillos) {
             HBox bocadilloBox = new HBox(10);
-            bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #f9f9f9;");
 
-            // Verificar si ya existe un pedido para este bocadillo
-            boolean existePedidoParaBocadillo = pedidos.stream().anyMatch(pedido -> pedido.getBocadillo().getId() == bocadillo.getId());
+            bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px;");
 
-            //Asignar el color al iniciar app
-            if (bocadillo.getTipo().equals("Frio")) {
-                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #89E9A8;"); // Verde
-            } else if (bocadillo.getTipo().equals("Caliente")) {
-                bocadilloBox.setStyle(bocadilloBox.getStyle() + "-fx-background-color: #F25F5F;"); // Rojo
+            if (bocadillo.getTipo() == Bocadillo.Tipo.Frio) {
+                bocadilloBox.setStyle(bocadilloBox.getStyle() + " -fx-background-color: #89E9A8;"); // Verde
+            } else if (bocadillo.getTipo() == Bocadillo.Tipo.Caliente) {
+                bocadilloBox.setStyle(bocadilloBox.getStyle() + " -fx-background-color: #F25F5F;"); // Rojo
             }
+
+            // Cambiar el color cuando el ratón entra
+            bocadilloBox.setOnMouseEntered(event -> {
+                bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #FFF1C5;"); // Color al pasar el ratón
+            });
+
+            // Restaurar el color cuando el ratón sale
+            bocadilloBox.setOnMouseExited(event -> {
+                if (bocadillo.getTipo() == Bocadillo.Tipo.Frio) {
+                    bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #89E9A8;");
+                } else if (bocadillo.getTipo() == Bocadillo.Tipo.Caliente) {
+                    bocadilloBox.setStyle("-fx-padding: 50px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: #F25F5F;");
+                }
+            });
+
 
             bocadilloBox.setUserData(bocadillo);
             bocadilloBox.setOnMouseClicked(event -> {
                 Bocadillo seleccionado = (Bocadillo) bocadilloBox.getUserData();
                 System.out.println("Bocadillo seleccionado: " + seleccionado.getNombre());
-                pedidoService.gestionarPedido(seleccionado, bocadilloBox, listaBocadillos); // Actualizar el color dinámicamente
+                pedidoService.gestionarPedido(seleccionado, bocadilloBox, listaBocadillos);
             });
 
             Label nombreLabel = new Label(bocadillo.getNombre());

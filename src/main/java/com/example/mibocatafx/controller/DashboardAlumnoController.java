@@ -2,24 +2,33 @@ package com.example.mibocatafx.controller;
 
 import com.example.mibocatafx.MainApplication;
 import com.example.mibocatafx.UsuarioSesion;
+import com.example.mibocatafx.models.Alumno;
+import com.example.mibocatafx.models.Pedido;
 import com.example.mibocatafx.service.BocadilloService;
+import com.example.mibocatafx.service.PedidoService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class DashboardAlumnoController implements Initializable {
+    private final PedidoService pedidoService = new PedidoService();
 
     private final BocadilloService bocadilloService = new BocadilloService();
 
@@ -31,11 +40,12 @@ public class DashboardAlumnoController implements Initializable {
     private Stage stage;
 
     @FXML
-    private AnchorPane contentPane;
-
-
+    private Label mensajePedido;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private String ultimoMensaje = "";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
 
         // Llamar al servicio para cargar los bocadillos
         if (bocadilloContainer != null) {
@@ -43,7 +53,10 @@ public class DashboardAlumnoController implements Initializable {
         } else {
             System.out.println("bocadilloContainer es null");
         }
+
+        actualizarMensaje();
     }
+
 
     /*
     *
@@ -119,4 +132,36 @@ public class DashboardAlumnoController implements Initializable {
             System.out.println("El stage es nulo, no se puede ajustar el tamaño de la ventana.");
         }
     }
+
+    /*
+    *
+    * Metodo para recargar el mensaje dinamicamente
+     */
+    private void actualizarMensaje() {
+        scheduler.scheduleAtFixedRate(() -> {
+            Platform.runLater(() -> cargarMensajePedido());
+        }, 0, 2, TimeUnit.SECONDS); // Ejecuta cada 2 segundos
+    }
+
+    private void cargarMensajePedido() {
+        Alumno alumno = new Alumno();
+        alumno.setId(1);
+        Date fechaActual = new Date();
+
+        try {
+            List<Pedido> pedidos = pedidoService.getPedidoAlumno(alumno, fechaActual);
+
+            String nuevoMensaje = pedidos.isEmpty() ? "No hay pedidos para hoy." :
+                    "Pedido reservado: " + pedidos.get(0).getBocadillo().getNombre();
+
+            if (!nuevoMensaje.equals(ultimoMensaje)) {
+                mensajePedido.setText(nuevoMensaje);
+                ultimoMensaje = nuevoMensaje;
+            }
+        } catch (Exception e) {
+            Platform.runLater(() -> mensajePedido.setText("Error al cargar el pedido."));
+            e.printStackTrace();
+        }
+    }
+
 }

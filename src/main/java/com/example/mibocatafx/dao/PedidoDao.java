@@ -103,7 +103,11 @@ public class PedidoDao {
     public List<Pedido> getPedidoAlumno(Alumno idAlumno, Date fecha) {
         LocalDate fechaSinHora = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            TypedQuery<Pedido> query = session.createQuery("FROM Pedido WHERE alumno = :idAlumno AND CAST(fecha AS localdate) = :fecha", Pedido.class);
+            // Asegúrate de que la consulta traiga también el bocadillo relacionado
+            TypedQuery<Pedido> query = session.createQuery(
+                    "FROM Pedido p JOIN FETCH p.bocadillo WHERE p.alumno = :idAlumno AND CAST(p.fecha AS localdate) = :fecha",
+                    Pedido.class
+            );
             query.setParameter("idAlumno", idAlumno);
             query.setParameter("fecha", fechaSinHora);
             return query.getResultList();

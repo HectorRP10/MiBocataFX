@@ -32,6 +32,7 @@
     -fx-alignment: center;
     -fx-spacing:10.0;
     -fx-alignment: top_center;
+    -fx-cursor: hand;
 }
 
 /* Estilos hbox de los botones del toolbar */
@@ -76,4 +77,10 @@
     -fx-spacing:10.0;
     -fx-alignment: top_center;
      -fx-background-color: #F25F5F;
+}
+
+#mensajePedido {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 20 0 0 0;
 }
