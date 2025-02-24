@@ -3,6 +3,7 @@ package com.example.mibocatafx.controller;
 import com.example.mibocatafx.MainApplication;
 import com.example.mibocatafx.UsuarioSesion;
 import com.example.mibocatafx.models.Alumno;
+import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.models.Pedido;
 import com.example.mibocatafx.service.BocadilloService;
 import com.example.mibocatafx.service.PedidoService;
@@ -13,13 +14,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -53,8 +63,7 @@ public class DashboardAlumnoController implements Initializable {
         } else {
             System.out.println("bocadilloContainer es null");
         }
-
-        actualizarMensaje();
+        cargarMensajePedido();
     }
 
 
@@ -133,35 +142,40 @@ public class DashboardAlumnoController implements Initializable {
         }
     }
 
-    /*
-    *
-    * Metodo para recargar el mensaje dinamicamente
-     */
-    private void actualizarMensaje() {
-        scheduler.scheduleAtFixedRate(() -> {
-            Platform.runLater(() -> cargarMensajePedido());
-        }, 0, 2, TimeUnit.SECONDS); // Ejecuta cada 2 segundos
-    }
 
     private void cargarMensajePedido() {
-        Alumno alumno = new Alumno();
-        alumno.setId(1);
-        Date fechaActual = new Date();
 
-        try {
-            List<Pedido> pedidos = pedidoService.getPedidoAlumno(alumno, fechaActual);
+            try {
+                Alumno alumno = new Alumno();
+                alumno.setId(1);
+                Date fechaActual = new Date();
 
-            String nuevoMensaje = pedidos.isEmpty() ? "No hay pedidos para hoy." :
-                    "Pedido reservado: " + pedidos.get(0).getBocadillo().getNombre();
+                List<Pedido> pedidos = pedidoService.getPedidoAlumno(alumno, fechaActual);
 
-            if (!nuevoMensaje.equals(ultimoMensaje)) {
-                mensajePedido.setText(nuevoMensaje);
-                ultimoMensaje = nuevoMensaje;
+                String nuevoMensaje = pedidos.isEmpty()
+                        ? "No hay pedidos para hoy."
+                        : "Pedido reservado: " + pedidos.get(0).getBocadillo().getNombre();
+
+                // Solo actualizar si el mensaje es diferente
+                if (!nuevoMensaje.equals(ultimoMensaje)) {
+                    ultimoMensaje = nuevoMensaje;
+                    Platform.runLater(() -> {
+                        if (mensajePedido != null) {
+                            mensajePedido.setText(nuevoMensaje);
+                        } else {
+                            System.out.println("mensajePedido es nulo");
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    if (mensajePedido != null) {
+                        mensajePedido.setText("Error al cargar el pedido.");
+                    }
+                });
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            Platform.runLater(() -> mensajePedido.setText("Error al cargar el pedido."));
-            e.printStackTrace();
-        }
+
     }
 
 }

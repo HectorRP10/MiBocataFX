@@ -24,7 +24,7 @@ public class PedidoDao {
 
     public List<Pedido> obtenerPedidosPorFecha(Date fecha, int paginaActual, int pedidosPorPagina, Bocadillo.Tipo tipoFiltro) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String consulta = "FROM Pedido p WHERE p.fecha >= :fecha AND p.retirado IS NULL";
+            String consulta = "FROM Pedido p WHERE p.fecha >= :fecha ";
             if (tipoFiltro != null) {
                 consulta += " AND p.bocadillo.tipo = :tipoBocadillo";
             }

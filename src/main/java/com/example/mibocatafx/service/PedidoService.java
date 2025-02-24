@@ -1,17 +1,23 @@
 package com.example.mibocatafx.service;
 
 import com.example.mibocatafx.UsuarioSesion;
+import com.example.mibocatafx.controller.DashboardAlumnoController;
 import com.example.mibocatafx.dao.PedidoDao;
 import com.example.mibocatafx.models.Alumno;
 import com.example.mibocatafx.models.Bocadillo;
 import com.example.mibocatafx.models.Pedido;
 import com.example.mibocatafx.models.Usuario;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class PedidoService {
 
@@ -87,12 +93,13 @@ public class PedidoService {
                 if (pedidoAnterior.getBocadillo().getId() == bocadillo.getId()) {
                     //Eliminar el pedido si es el mismo bocadillo
                     eliminarPedido(pedidoAnterior);
-                    return;
+
                 } else {
                     //Actualizar el pedido si el bocadillo es diferente
                     pedidoAnterior.setBocadillo(bocadillo);
                     pedidoAnterior.setPrecio(bocadillo.getPrecio());
                     actualizarPedido(pedidoAnterior);
+
                 }
             } else {
                 //Insertar un nuevo pedido si no hay uno existente
