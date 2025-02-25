@@ -10,6 +10,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <Label layoutX="275.0" layoutY="20.0" text="Cursos" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;" />
+
       <TableView fx:id="tablaCursos" layoutY="92.0" prefHeight="200.0" prefWidth="550.0">
          <columns>
             <TableColumn fx:id="idCurso" prefWidth="75.0" text="Id" />

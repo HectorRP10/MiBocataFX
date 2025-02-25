@@ -56,7 +56,6 @@ public class DashboardAlumnoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
         // Llamar al servicio para cargar los bocadillos
         if (bocadilloContainer != null) {
             bocadilloService.cargarBocadillos(bocadilloContainer);
@@ -70,7 +69,7 @@ public class DashboardAlumnoController implements Initializable {
     /*
     *
     * Método para cargar el center directamente cuando inicio sesion
-     */
+    */
     public  void cargarCenter() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/mibocatafx/fxml/DashboardAlumno.fxml"));
@@ -144,7 +143,6 @@ public class DashboardAlumnoController implements Initializable {
 
 
     private void cargarMensajePedido() {
-
             try {
                 Alumno alumno = new Alumno();
                 alumno.setId(1);
